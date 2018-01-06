@@ -5,7 +5,7 @@ use yii\db\Migration;
 /**
  * Handles the creation of table `branch`.
  */
-class m171229_132130_create_branch_table extends Migration
+class m180106_112311_create_branch_table extends Migration
 {
     /**
      * @inheritdoc
@@ -14,6 +14,9 @@ class m171229_132130_create_branch_table extends Migration
     {
         $this->createTable('branch', [
             'id' => $this->primaryKey(),
+            'name' => $this->string()->notNull(),
+            'image' => $this->string()->notNull(),
+            'dcreated' => $this->integer(),
         ]);
     }
 

@@ -18,7 +18,7 @@ class m180105_213736_create_user_table extends Migration
             'email' => $this->string()->notNull(),
             'password_hash' => $this->string()->notNull(),
             'status' => $this->integer()->notNull(),
-            'role' => $this->integer(),
+            'priority' => $this->integer(),
             'auth_key' => $this->string(32)->notNull(),
             'secret_key' => $this->string(),
             'created_at' => $this->integer()->notNull(),
