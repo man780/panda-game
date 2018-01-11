@@ -2,14 +2,17 @@
 
 namespace app\controllers;
 
+use app\models\Branch;
+use app\models\Team;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use yii\web\UploadedFile;
 
-class SiteController extends Controller
+class CompanyController extends Controller
 {
     //public $layout = 'basic';
     public $defaultAction = 'index';
@@ -51,7 +54,30 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-        return $this->render('index');
+        $teams = Team::find()->all();
+        $branches = Branch::find()->all();
+        return $this->render('index', [
+            'branches' => $branches,
+            'teams' => $teams,
+        ]);
+    }
+
+    public function actionCreateBranch(){
+        $model = new Branch();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $model->file = UploadedFile::getInstance($model, 'file');
+            if($model->file){
+                $file = $model->file;
+                $file->saveAs('uploads/branches/' . $file->baseName . '.' . $file->extension);
+            }
+            vd($model);
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+//vd($model);
+        return $this->render('branch_form', [
+            'model' => $model,
+        ]);
     }
 
     public function actionLogin()
