@@ -18,7 +18,7 @@ class LoginAsset extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-        'css/login.css?4',
+        'css/login.css',
     ];
     public $js = [
         'js/login.js'

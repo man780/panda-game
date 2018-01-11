@@ -12,8 +12,11 @@ use yii\helpers\Url;
  * @property string $fio
  * @property string $email
  * @property string $date_begin
+<<<<<<< HEAD
  * @property string $invite_code
  * @property int $status
+=======
+>>>>>>> f223ae128548b3e83fc23fea9e627af68d184621
  * @property int $dcreated
  */
 class Invite extends \yii\db\ActiveRecord
@@ -34,6 +37,7 @@ class Invite extends \yii\db\ActiveRecord
         return [
             [['status', 'dcreated'], 'integer'],
             [['fio', 'email', 'date_begin', 'invite_code'], 'string', 'max' => 255],
+
         ];
     }
 

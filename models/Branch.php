@@ -36,12 +36,14 @@ class Branch extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+
             [['name'], 'required'],
             //[['dcreated'], 'integer'],
             [['file'], 'file', 'skipOnEmpty' => false,
                 'extensions' => ['jpg', 'jpeg', 'png', 'gif']
             ],
             [['name'], 'string', 'max' => 255],
+
         ];
     }
 
@@ -55,6 +57,7 @@ class Branch extends \yii\db\ActiveRecord
             'name' => Yii::t('app', 'Наименования'),
             'image' => Yii::t('app', 'Картинка'),
             'dcreated' => Yii::t('app', 'Время добавления'),
+
         ];
     }
 
