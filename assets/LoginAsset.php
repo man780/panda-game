@@ -21,7 +21,8 @@ class LoginAsset extends AssetBundle
         'css/login.css',
     ];
     public $js = [
-        'js/login.js'
+        'js/login.js',
+        'js/custom.js'
     ];
     public $depends = [
         'yii\web\YiiAsset',

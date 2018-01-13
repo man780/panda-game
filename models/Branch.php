@@ -39,7 +39,7 @@ class Branch extends \yii\db\ActiveRecord
 
             [['name'], 'required'],
             //[['dcreated'], 'integer'],
-            [['file'], 'file', 'skipOnEmpty' => false,
+            [['file'], 'file', 'skipOnEmpty' => true,
                 'extensions' => ['jpg', 'jpeg', 'png', 'gif']
             ],
             [['name'], 'string', 'max' => 255],

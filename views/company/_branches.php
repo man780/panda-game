@@ -23,9 +23,9 @@ use yii\widgets\ActiveForm;
 <div>
     <h2>Список отделов</h2>
     <?foreach ($branches as $branch):?>
-        <?=$branch->image;?>
+        <?=Html::img([$branch->image, ]);?>
         <?=$branch->name;?>
-        <?=$branch->employees;?>
+        <?=count($branch->employees);?>
         <hr>
     <?endforeach;?>
 </div>

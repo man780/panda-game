@@ -63,18 +63,25 @@ class CompanyController extends Controller
     }
 
     public function actionCreateBranch(){
+        $this->layout = false;
         $model = new Branch();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $model->file = UploadedFile::getInstance($model, 'file');
             if($model->file){
                 $file = $model->file;
-                $file->saveAs('uploads/branches/' . $file->baseName . '.' . $file->extension);
+                $dir = \Yii::getAlias('@app');
+                $model->image = 'images/branches/' . $file->baseName . '.' . $file->extension;
+                $file->saveAs($dir.'/web/images/branches/' . $file->baseName . '.' . $file->extension);
             }
-            vd($model);
-            return $this->redirect(['view', 'id' => $model->id]);
+            $model->file = null;
+            $model->dcreated = time();
+            if($model->save()){
+                return $this->redirect(['company/index']);
+            }else{
+                vd($model-errors);
+            }
         }
-//vd($model);
         return $this->render('branch_form', [
             'model' => $model,
         ]);
