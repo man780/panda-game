@@ -19,6 +19,10 @@ use Yii;
 class Team extends \yii\db\ActiveRecord
 {
     /**
+     * @var UploadedFile|Null file attribute
+     */
+    public $file;
+    /**
      * @inheritdoc
      */
     public static function tableName()
@@ -32,8 +36,11 @@ class Team extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'branch_id', 'image'], 'required'],
-            [['branch_id', 'dcreated'], 'integer'],
+            [['name', 'branch_id'], 'required'],
+            [['branch_id'], 'integer'],
+            [['file'], 'file', 'skipOnEmpty' => true,
+                'extensions' => ['jpg', 'jpeg', 'png', 'gif']
+            ],
             [['name', 'image'], 'string', 'max' => 255],
             [['branch_id'], 'exist', 'skipOnError' => true, 'targetClass' => Branch::className(), 'targetAttribute' => ['branch_id' => 'id']],
         ];

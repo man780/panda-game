@@ -11,13 +11,16 @@ use yii\helpers\Url;
 <h2>
     Создайте команду и привяжите к отделу
 </h2>
-<?=Html::a('Добавить команду', Url::toRoute('ds'), ['class' => 'btn btn-lg btn-primary'])?>
+<?//=Html::a('Добавить отдел', Url::toRoute('ds'), ['class' => 'btn btn-lg btn-primary'])?>
+<?= Html::a(Yii::t('app', 'Добавить команду'), null, ['class' => 'btn btn-primary', 'id'=>'createTeamButton',
+    'value'=>Url::toRoute(['/company/create-team'])]) ?>
 <hr>
 <div>
     <h2>Список команд</h2>
     <?foreach ($teams as $team):?>
         <?=$team->image;?>
         <?=$team->name;?>
+        <?=$team->branch;?>
         <?=$team->employees;?>
         <hr>
     <?endforeach;?>

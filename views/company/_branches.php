@@ -17,7 +17,7 @@ use yii\widgets\ActiveForm;
     Игра между отделами возможна только при наличии не менее двух отделов компании!
 </h2>
 <?//=Html::a('Добавить отдел', Url::toRoute('ds'), ['class' => 'btn btn-lg btn-primary'])?>
-<?= Html::a(Yii::t('app', 'Добавить отдел'), null, ['class' => 'btn btn-primary', 'id'=>'createBannerButton',
+<?= Html::a(Yii::t('app', 'Добавить отдел'), null, ['class' => 'btn btn-primary', 'id'=>'createBranchButton',
     'value'=>Url::toRoute(['/company/create-branch'])]) ?>
 <hr>
 <div>
@@ -29,4 +29,3 @@ use yii\widgets\ActiveForm;
         <hr>
     <?endforeach;?>
 </div>
-

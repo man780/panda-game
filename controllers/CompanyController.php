@@ -87,6 +87,31 @@ class CompanyController extends Controller
         ]);
     }
 
+    public function actionCreateTeam(){
+        $this->layout = false;
+        $model = new Team();
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            $model->file = UploadedFile::getInstance($model, 'file');
+            if($model->file){
+                $file = $model->file;
+                $dir = \Yii::getAlias('@app');
+                $model->image = 'images/branches/' . $file->baseName . '.' . $file->extension;
+                $file->saveAs($dir.'/web/images/teams/' . $file->baseName . '.' . $file->extension);
+            }
+            $model->file = null;
+            $model->dcreated = time();
+            if($model->save()){
+                return $this->redirect(['company/index']);
+            }else{
+                vd($model-errors);
+            }
+        }
+        return $this->render('team_form', [
+            'model' => $model,
+        ]);
+    }
+
     public function actionLogin()
     {
         if (!\Yii::$app->user->isGuest) {
