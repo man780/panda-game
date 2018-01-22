@@ -6,6 +6,7 @@ use app\models\Branch;
 use app\models\Team;
 use Yii;
 use yii\filters\AccessControl;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
@@ -54,11 +55,13 @@ class CompanyController extends Controller
 
     public function actionIndex()
     {
+        $this->view->title = 'Компания';
         $teams = Team::find()->all();
         $branches = Branch::find()->all();
         return $this->render('index', [
             'branches' => $branches,
             'teams' => $teams,
+            'title' => $title,
         ]);
     }
 
@@ -66,7 +69,11 @@ class CompanyController extends Controller
         $this->layout = false;
         $model = new Branch();
 
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+        if (Yii::$app->request->isAjax &&
+            $model->load(Yii::$app->request->post()) &&
+            $model->validate())
+        {
+
             $model->file = UploadedFile::getInstance($model, 'file');
             if($model->file){
                 $file = $model->file;
@@ -82,7 +89,7 @@ class CompanyController extends Controller
                 vd($model-errors);
             }
         }
-        return $this->render('branch_form', [
+        return $this->renderAjax('branch_form', [
             'model' => $model,
         ]);
     }
@@ -96,7 +103,7 @@ class CompanyController extends Controller
             if($model->file){
                 $file = $model->file;
                 $dir = \Yii::getAlias('@app');
-                $model->image = 'images/branches/' . $file->baseName . '.' . $file->extension;
+                $model->image = 'images/teams/' . $file->baseName . '.' . $file->extension;
                 $file->saveAs($dir.'/web/images/teams/' . $file->baseName . '.' . $file->extension);
             }
             $model->file = null;
@@ -107,46 +114,13 @@ class CompanyController extends Controller
                 vd($model-errors);
             }
         }
-        return $this->render('team_form', [
+        $class = new Branch();
+        //$branches = ArrayHelper::map(Branch::find()->asArray()->all(), 'id','name');
+        $branches = $class->getBranchesAll();
+        return $this->renderAjax('team_form', [
             'model' => $model,
+            'branches' => $branches,
         ]);
-    }
-
-    public function actionLogin()
-    {
-        if (!\Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
-
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
-        } else {
-            return $this->render('login', [
-                'model' => $model,
-            ]);
-        }
-    }
-
-    public function actionLogout()
-    {
-        Yii::$app->user->logout();
-
-        return $this->goHome();
-    }
-
-    public function actionContact()
-    {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
-            Yii::$app->session->setFlash('contactFormSubmitted');
-
-            return $this->refresh();
-        } else {
-            return $this->render('contact', [
-                'model' => $model,
-            ]);
-        }
     }
 
     public function actionAbout()

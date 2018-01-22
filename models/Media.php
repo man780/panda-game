@@ -10,6 +10,7 @@ use Yii;
  * @property int $id
  * @property string $name
  * @property string $description
+ * @property int $foto_video
  * @property int $employee_id
  * @property int $created_time
  *
@@ -31,9 +32,9 @@ class Media extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'employee_id'], 'required'],
+            [['name'], 'required'],
             [['description'], 'string'],
-            [['employee_id', 'created_time'], 'integer'],
+            [['foto_video', 'employee_id', 'created_time'], 'integer'],
             [['name'], 'string', 'max' => 255],
             [['employee_id'], 'exist', 'skipOnError' => true, 'targetClass' => Employee::className(), 'targetAttribute' => ['employee_id' => 'id']],
         ];
@@ -48,9 +49,22 @@ class Media extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'name' => Yii::t('app', 'Name'),
             'description' => Yii::t('app', 'Description'),
+            'foto_video' => Yii::t('app', 'Foto Video'),
             'employee_id' => Yii::t('app', 'Employee ID'),
             'created_time' => Yii::t('app', 'Created Time'),
         ];
+    }
+
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+
+            $this->employee_id = $model->employee_id;
+            $this->created_time = time();
+
+            return true;
+        }
+        return false;
     }
 
     /**

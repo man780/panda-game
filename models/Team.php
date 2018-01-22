@@ -36,9 +36,9 @@ class Team extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'branch_id'], 'required'],
+            [['name', 'branch_id', 'file'], 'required'],
             [['branch_id'], 'integer'],
-            [['file'], 'file', 'skipOnEmpty' => true,
+            [['file'], 'file', 'skipOnEmpty' => false,
                 'extensions' => ['jpg', 'jpeg', 'png', 'gif']
             ],
             [['name', 'image'], 'string', 'max' => 255],
@@ -53,10 +53,11 @@ class Team extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'name' => Yii::t('app', 'Name'),
-            'branch_id' => Yii::t('app', 'Branch ID'),
-            'image' => Yii::t('app', 'Image'),
-            'dcreated' => Yii::t('app', 'Dcreated'),
+            'name' => Yii::t('app', 'Наименование'),
+            'branch_id' => Yii::t('app', 'Отдел'),
+            'image' => Yii::t('app', 'Картинка'),
+            'dcreated' => Yii::t('app', 'Дата создания'),
+            'file' => Yii::t('app', 'Картинка (Аватарка)'),
         ];
     }
 

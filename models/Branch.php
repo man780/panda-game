@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "branch".
@@ -39,7 +40,7 @@ class Branch extends \yii\db\ActiveRecord
 
             [['name'], 'required'],
             //[['dcreated'], 'integer'],
-            [['file'], 'file', 'skipOnEmpty' => true,
+            [['file'], 'file', 'skipOnEmpty' => false,
                 'extensions' => ['jpg', 'jpeg', 'png', 'gif']
             ],
             [['name'], 'string', 'max' => 255],
@@ -54,10 +55,10 @@ class Branch extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', '№'),
-            'name' => Yii::t('app', 'Наименования'),
+            'name' => Yii::t('app', 'Наименование'),
             'image' => Yii::t('app', 'Картинка'),
             'dcreated' => Yii::t('app', 'Время добавления'),
-
+            'file' => Yii::t('app', 'Картинка (Аватарка)'),
         ];
     }
 
@@ -83,5 +84,10 @@ class Branch extends \yii\db\ActiveRecord
     public function getTeams()
     {
         return $this->hasMany(Team::className(), ['branch_id' => 'id']);
+    }
+
+    public function getBranchesAll()
+    {
+        return ArrayHelper::map(Branch::find()->asArray()->all(), 'id', 'name');
     }
 }

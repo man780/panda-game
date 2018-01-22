@@ -14,16 +14,11 @@ Pjax::begin(['id' => 'banner-form']) ?>
     'id' => 'banner-form',
     'options' => [
         'data-pjax' => true,
-        'enctype' => 'multipart/form-data'
     ]
 ]);
 ?>
 <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
-<?= $form->field($model, 'branch_id')->dropDownList($branches); ?>
-<?= $form->field($model, 'file')->fileInput([
-        "accept"=>"image/*"
-    ])
-?>
+<?= $form->field($model, 'description')->textarea(['maxlength' => true]) ?>
 
 <?= Html::submitButton(Yii::t('app', 'Create') , ['class' => 'btn btn-primary']) ?>
 

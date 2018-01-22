@@ -6,6 +6,7 @@
  * Time: 12:28
  */
 use yii\bootstrap\Tabs;
+
 echo Tabs::widget([
     'items' => [
         [

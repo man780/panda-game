@@ -9,6 +9,7 @@
 namespace app\controllers;
 
 
+use app\models\Media;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 
@@ -30,7 +31,47 @@ class MediaController extends Controller
     }
 
     public function actionIndex(){
+        $this->view->title = 'Медиа';
+        return $this->render('index');
+    }
 
+    public function actionCreateFoto(){
+        $this->view->title = 'Медиа';
+        $this->layout = false;
+        $model = new Media();
+
+        if ($model->load(\Yii::$app->request->post()) && $model->validate()) {
+            $model->foto_video = 1;
+            if($model->save()){
+                return $this->redirect(['media/index']);
+            }else{
+                vd($model-errors);
+            }
+        }
+
+        return $this->renderAjax('_create_foto', [
+            'model' => $model,
+        ]);
+    }
+
+    public function actionCreateVideo(){
+        $this->view->title = 'Медиа';
+        $this->layout = false;
+        $model = new Media();
+
+        if ($model->load(\Yii::$app->request->post()) && $model->validate()) {
+            $model->foto_video = 2;
+
+            if($model->save()){
+                return $this->redirect(['media/index']);
+            }else{
+                vd($model-errors);
+            }
+        }
+
+        return $this->renderAjax('_create_video', [
+            'model' => $model,
+        ]);
     }
 
 
