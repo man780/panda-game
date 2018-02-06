@@ -7,6 +7,8 @@
  */
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+
+$this->title = 'Профиль';
 ?>
 <div class="employee-form">
 

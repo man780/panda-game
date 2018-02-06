@@ -71,13 +71,15 @@ class BranchController extends Controller
             $model->file = UploadedFile::getInstance($model, 'file');
             if($model->file){
                 $file = $model->file;
-                $model->image = $file->baseName . '.' . $file->extension;
-                //vd($file);
-                $file->saveAs('images/branches/' . $file->baseName . '.' . $file->extension);
+                $baseName = join('_', array_map('trim', explode(' ', $file->baseName)));
+                $model->image = $baseName. '.' . $file->extension;
             }
-
-
             if($model->save()){
+                if($model->file){
+                    $file = $model->file;
+                    $baseName = join('_', array_map('trim', explode(' ', $file->baseName)));
+                    $model->file->saveAs('images/branches/' . $baseName . '.' . $file->extension);
+                }
                 return $this->redirect(['view', 'id' => $model->id]);
             }
 

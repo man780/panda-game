@@ -77,13 +77,15 @@ class CompanyController extends Controller
             $model->file = UploadedFile::getInstance($model, 'file');
             if($model->file){
                 $file = $model->file;
-                $dir = \Yii::getAlias('@app');
                 $model->image = 'images/branches/' . $file->baseName . '.' . $file->extension;
-                $file->saveAs($dir.'/web/images/branches/' . $file->baseName . '.' . $file->extension);
             }
-            $model->file = null;
+            //$model->file = null;
             $model->dcreated = time();
             if($model->save()){
+                if($model->file){
+                    $file = $model->file;
+                    $file->saveAs($dir.'/web/images/branches/' . $file->baseName . '.' . $file->extension);
+                }
                 return $this->redirect(['company/index']);
             }else{
                 vd($model-errors);
@@ -100,15 +102,16 @@ class CompanyController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $model->file = UploadedFile::getInstance($model, 'file');
-            if($model->file){
-                $file = $model->file;
-                $dir = \Yii::getAlias('@app');
-                $model->image = 'images/teams/' . $file->baseName . '.' . $file->extension;
-                $file->saveAs($dir.'/web/images/teams/' . $file->baseName . '.' . $file->extension);
-            }
-            $model->file = null;
+
             $model->dcreated = time();
             if($model->save()){
+                if($model->file){
+                    $file = $model->file;
+                    $dir = \Yii::getAlias('@app');
+                    $model->image = 'images/teams/' . $file->baseName . '.' . $file->extension;
+                    $file->saveAs($dir.'/web/images/teams/' . $file->baseName . '.' . $file->extension);
+                }
+                $model->file = null;
                 return $this->redirect(['company/index']);
             }else{
                 vd($model-errors);

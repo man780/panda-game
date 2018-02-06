@@ -64,9 +64,15 @@ class SiteController extends Controller
     {
         $model = new Employee();
         $model->scenario = 'new-employee';
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+        //vd([Yii::$app->request->post()]);
+        if ($model->load(Yii::$app->request->post())) {
+            $model->user_id = Yii::$app->user->id;
+            $model->team_id = 1;
+            $model->branch_id = 1;
+            $model->position_id = 1;
+            $model->role_id = 1;
             if($model->save()){
-                return $this->redirect(['view', 'id' => $model->id]);
+                return $this->redirect(['site/index']);
             }else{
                 vd($model->errors);
             }
