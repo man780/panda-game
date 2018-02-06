@@ -57,6 +57,7 @@ class Employee extends \yii\db\ActiveRecord
     {
         return [
             [['user_id', 'name', 'fname', 'team_id', 'branch_id', 'position_id', 'role_id'], 'required'],
+            //[['name', 'fname', 'oname', 'about'], 'required', 'on' => 'new-employee'],
             [['user_id', 'birthday', 'team_id', 'branch_id', 'position_id', 'role_id', 'join_date'], 'integer'],
             [['about'], 'string'],
             [['name', 'fname', 'oname', 'avatar', 'phone', 'email', 'skype'], 'string', 'max' => 255],

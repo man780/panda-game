@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Employee;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -51,11 +52,35 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-        return $this->render('index');
+        $employee = Employee::find()->where(['user_id' => Yii::$app->user->id])->one();
+        if($employee){
+            return $this->render('index');
+        }else{
+            return $this->redirect('site/new-employee');
+        }
+    }
+
+    public function actionNewEmployee()
+    {
+        $model = new Employee();
+        $model->scenario = 'new-employee';
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            if($model->save()){
+                return $this->redirect(['view', 'id' => $model->id]);
+            }else{
+                vd($model->errors);
+            }
+
+        }
+        return $this->render('new-employee', [
+            'model' => $model,
+        ]);
+
     }
 
     public function actionLogin()
     {
+        $this->layout = 'auth';
         if (!\Yii::$app->user->isGuest) {
             return $this->goHome();
         }

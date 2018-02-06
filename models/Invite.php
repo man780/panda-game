@@ -64,7 +64,7 @@ class Invite extends \yii\db\ActiveRecord
         $this->invite_code = md5(time().rand(1,9999));
         $this->status = 0;
         $this->dcreated = time();
-        $url = Url::toRoute(['employee/confirm-email', 'email' => $this->email, 'token' => $this->invite_code]);
+        $url = Url::toRoute(['employees/confirm-email', 'email' => $this->email, 'token' => $this->invite_code]);
         return /*Yii::$app->mailer->compose()
             ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name.' (отправлено роботом)'])
             ->setTo($this->email)

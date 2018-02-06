@@ -72,9 +72,10 @@ class BranchController extends Controller
             if($model->file){
                 $file = $model->file;
                 $model->image = $file->baseName . '.' . $file->extension;
+                //vd($file);
                 $file->saveAs('images/branches/' . $file->baseName . '.' . $file->extension);
             }
-            //vd($model->attributes);
+
 
             if($model->save()){
                 return $this->redirect(['view', 'id' => $model->id]);

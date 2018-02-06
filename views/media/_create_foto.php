@@ -14,7 +14,8 @@ Pjax::begin(['id' => 'banner-form']) ?>
     'id' => 'banner-form',
     'options' => [
         'data-pjax' => true,
-    ]
+    ],
+    //'' => '',
 ]);
 ?>
 <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>

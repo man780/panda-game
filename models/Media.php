@@ -34,7 +34,7 @@ class Media extends \yii\db\ActiveRecord
         return [
             [['name'], 'required'],
             [['description'], 'string'],
-            [['foto_video', 'employee_id', 'created_time'], 'integer'],
+            //[['foto_video', 'employee_id', 'created_time'], 'integer'],
             [['name'], 'string', 'max' => 255],
             [['employee_id'], 'exist', 'skipOnError' => true, 'targetClass' => Employee::className(), 'targetAttribute' => ['employee_id' => 'id']],
         ];
@@ -47,11 +47,11 @@ class Media extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'name' => Yii::t('app', 'Name'),
-            'description' => Yii::t('app', 'Description'),
+            'name' => Yii::t('app', 'Названия'),
+            'description' => Yii::t('app', 'Описания'),
             'foto_video' => Yii::t('app', 'Foto Video'),
-            'employee_id' => Yii::t('app', 'Employee ID'),
-            'created_time' => Yii::t('app', 'Created Time'),
+            'employee_id' => Yii::t('app', 'Сотрудник'),
+            'created_time' => Yii::t('app', 'Время создания'),
         ];
     }
 
@@ -59,7 +59,7 @@ class Media extends \yii\db\ActiveRecord
     {
         if (parent::beforeSave($insert)) {
 
-            $this->employee_id = $model->employee_id;
+            //$this->employee_id = \Yii::$app->user->id;
             $this->created_time = time();
 
             return true;

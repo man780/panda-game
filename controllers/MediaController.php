@@ -12,6 +12,7 @@ namespace app\controllers;
 use app\models\Media;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
+use Yii;
 
 class MediaController extends Controller
 {
@@ -40,12 +41,14 @@ class MediaController extends Controller
         $this->layout = false;
         $model = new Media();
 
-        if ($model->load(\Yii::$app->request->post()) && $model->validate()) {
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $model->foto_video = 1;
+            $model->employee_id = Yii::$app->user->id;
+            //vd(Yii::$app->user->id);
             if($model->save()){
                 return $this->redirect(['media/index']);
             }else{
-                vd($model-errors);
+                vd($model->errors);
             }
         }
 

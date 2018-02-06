@@ -19,6 +19,7 @@ class m180106_113715_create_media_table extends Migration
             'id' => $this->primaryKey(),
             'name' => $this->string()->notNull(),
             'description' => $this->text(),
+            'foto_video' => $this->integer(),
             'employee_id' => $this->integer()->notNull(),
             'created_time' => $this->integer(),
         ]);
