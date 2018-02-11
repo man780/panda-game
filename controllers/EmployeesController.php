@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\AddUserEmployeeForm;
 use app\models\Invite;
 use app\models\User;
 use Yii;
@@ -60,6 +61,7 @@ class EmployeesController extends Controller
     public function actionInvite(){
         $invite = new Invite();
         if ($invite->load(Yii::$app->request->get())) {
+            //vd($invite->attributes);
             if($invite->send() && $invite->save()){
                 return $this->redirect(['gamers']);
             }
@@ -68,20 +70,36 @@ class EmployeesController extends Controller
 
     public function actionConfirmEmail(){
         $get = Yii::$app->request->get();
-        $invite = Invite::find(['token' => $get['token']])->one();
+        $invite = Invite::find()->where(['invite_code' => $get['token']])->one();
         $count = count(User::findAll(['email' => $invite->email]));
         $message = '';
         if($count==0 && is_array($invite->attributes) && $invite->status==0){
-            $invite->status=1;
-            if($invite->save() && $invite->confirmed($invite->id)){
-                $message = 'Спасибо за подтверждение почты!';
-            }
+            //$invite->status=1;
+            //if($invite->save() && $invite->confirmed($invite->id)){
+            $message = 'Спасибо за подтверждение почты!';
+            //}
         }elseif($count>0){
             $message = 'Это почта уже зарегистрирована!';
         }else{
             $message = 'Вы уже подтвердили эту почту!';
         }
-        return $this->render('confirm', ['message' => $message]);
+        $addUserEmployeeForm = new AddUserEmployeeForm();
+        return $this->render('confirm', [
+            'message' => $message,
+            'addUserEmployeeForm' => $addUserEmployeeForm,
+        ]);
+    }
+
+    public function actionAddUserEmployee(){
+        $post = Yii::$app->request->post();
+        vd($post);
+    }
+
+    public function actionSaveUser($invite_id){
+
+        return $this->render('save-user', [
+            'model' => $model,
+        ]);
     }
 
     /**

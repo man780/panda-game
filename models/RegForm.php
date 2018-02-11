@@ -37,6 +37,7 @@ class RegForm extends Model
             ['status', 'default', 'value' => User::STATUS_NOT_ACTIVE, 'on' => 'emailActivation'],
         ];
     }
+
     public function attributeLabels()
     {
         return [
@@ -45,6 +46,7 @@ class RegForm extends Model
             'password' => 'Пароль'
         ];
     }
+
     public function reg()
     {
         $user = new User();

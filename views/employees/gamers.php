@@ -1,6 +1,12 @@
 <?
 use yii\widgets\ActiveForm;
 use yii\helpers\Html;
+use yii\jui\DatePicker;
+use yii\helpers\Url;
+
+use app\models\Invite;
+$this->title = 'Игроки';
+$invites = Invite::find()->where(['status' => 1])->all();
 ?>
 <div class="well">
     <div class="row">
@@ -25,6 +31,7 @@ use yii\helpers\Html;
                 </div>
                 <?php ActiveForm::end(); ?>
             </div>
+            <br><br><br><br><br><br><br>
         </div>
         <div class="col-md-4">
             <h3>Пригласить игрока</h3>
@@ -39,14 +46,28 @@ use yii\helpers\Html;
 
                 <?= $form->field($invite, 'email') ?>
 
-                <?= $form->field($invite, 'date_begin') ?>
+                <?= $form->field($invite, 'date_begin')->widget(DatePicker::className(), [
+                    'language' => 'ru',
+                    'dateFormat' => 'yyyy-MM-dd',
+                    'class' => 'form-controle'
+                ]) ?>
 
                 <div class="form-group">
                     <?= Html::submitButton(Yii::t('app', 'Пригласить'), ['class' => 'btn btn-primary btn-lg']) ?>
-
                 </div>
                 <?php ActiveForm::end(); ?>
             </div>
+        </div>
+        <div class="col-md-4">
+            <h3>Приглашённые</h3>
+            <?//vd($model);?>
+            <?foreach($invites as $invite):?>
+                <div>
+                    <?=Html::a($invite->fio, Url::to(['employees/save-user', 'invite_id'=>$invite->id]))?>
+                </div>
+
+            <?endforeach;?>
+
         </div>
     </div>
 </div>

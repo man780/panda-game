@@ -63,7 +63,7 @@ class Invite extends \yii\db\ActiveRecord
     public function send(){
         $this->invite_code = md5(time().rand(1,9999));
         $this->status = 0;
-        $this->dcreated = time();
+        $this->dcreated = date('Y-m-d H:i:s');
         $url = Url::toRoute(['employees/confirm-email', 'email' => $this->email, 'token' => $this->invite_code]);
         return /*Yii::$app->mailer->compose()
             ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name.' (отправлено роботом)'])
@@ -75,7 +75,7 @@ class Invite extends \yii\db\ActiveRecord
             Yii::$app->mailer->compose()
                 ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name.' (отправлено роботом)'])
                 ->setTo($this->email)
-                ->setSubject('Сброс пароля для '.Yii::$app->name)
+                ->setSubject('Приглашения от '.Yii::$app->name)
                 ->setHtmlBody('<b>'.$this->fio.'</b> <a href="'.Yii::$app->getRequest()->serverName.$url.'">Перейти по ссылке</a>')
                 ->send();
         //vd($this->attributes); die;
