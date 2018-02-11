@@ -11,7 +11,7 @@ use yii\widgets\ActiveForm;
 <div class="branch-form">
 
     <?php $form = ActiveForm::begin([
-        'id' => 'banner-form',
+        'id' => 'branch-form',
         'options' => [
             'enctype' => 'multipart/form-data'
         ],
