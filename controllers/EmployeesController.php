@@ -62,6 +62,7 @@ class EmployeesController extends Controller
         $invite = new Invite();
         if ($invite->load(Yii::$app->request->get())) {
             //vd($invite->attributes);
+            $invite->status = null;
             if($invite->send() && $invite->save()){
                 return $this->redirect(['gamers']);
             }
@@ -73,10 +74,12 @@ class EmployeesController extends Controller
         $invite = Invite::find()->where(['invite_code' => $get['token']])->one();
         $count = count(User::findAll(['email' => $invite->email]));
         $message = '';
+        //vd($invite->attributes);
         if($count==0 && is_array($invite->attributes) && $invite->status==0){
             //$invite->status=1;
             //if($invite->save() && $invite->confirmed($invite->id)){
-            $message = 'Спасибо за подтверждение почты!';
+            $message = 'Спасибо за подтверждение почты!<br>';
+            $message .= 'Пожалуйста заполните форму';
             //}
         }elseif($count>0){
             $message = 'Это почта уже зарегистрирована!';
@@ -84,6 +87,11 @@ class EmployeesController extends Controller
             $message = 'Вы уже подтвердили эту почту!';
         }
         $addUserEmployeeForm = new AddUserEmployeeForm();
+        $addUserEmployeeForm->token = $get['token'];
+        $addUserEmployeeForm->email = $invite['email'];
+        $fioArr = explode(' ', $invite['fio']);
+        $addUserEmployeeForm->name = $fioArr[1];
+        $addUserEmployeeForm->fname = $fioArr[0];
         return $this->render('confirm', [
             'message' => $message,
             'addUserEmployeeForm' => $addUserEmployeeForm,
@@ -92,10 +100,24 @@ class EmployeesController extends Controller
 
     public function actionAddUserEmployee(){
         $post = Yii::$app->request->post();
-        vd($post);
+        $user = new AddUserEmployeeForm();
+        $user->load(Yii::$app->request->post());
+        $user->status = 1;
+        $invite = Invite::find()->where(['invite_code' => $user->token])->one();
+        //vd($invite);
+        $invite->status = 0;
+        if($user->reg() && $invite->save()){
+            return $this->redirect('/index');
+            //vd([$user, $post]);
+        }else{
+            vd($invite->errors);
+        }
+
     }
 
     public function actionSaveUser($invite_id){
+
+        //$model = new
 
         return $this->render('save-user', [
             'model' => $model,

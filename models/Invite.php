@@ -35,7 +35,7 @@ class Invite extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['status', 'dcreated'], 'integer'],
+            [['status'], 'integer'],
             [['fio', 'email', 'date_begin', 'invite_code'], 'string', 'max' => 255],
 
         ];
@@ -55,6 +55,16 @@ class Invite extends \yii\db\ActiveRecord
             'status' => Yii::t('app', 'Status'),
             'dcreated' => Yii::t('app', 'Время создания'),
         ];
+    }
+
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            $this->dcreated = date('Y-m-d H:i:s');
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**

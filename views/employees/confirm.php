@@ -22,16 +22,17 @@ $this->title = $message;
 
     <?= $form->field($addUserEmployeeForm, 'email') ?>
 
-    <?= $form->field($addUserEmployeeForm, 'password') ?>
+    <?= $form->field($addUserEmployeeForm, 'password')->passwordInput() ?>
 
     <hr>
 
     <?= $form->field($addUserEmployeeForm, 'name') ?>
     <?= $form->field($addUserEmployeeForm, 'fname') ?>
     <?= $form->field($addUserEmployeeForm, 'oname') ?>
-    <?= $form->field($addUserEmployeeForm, 'about') ?>
+    <?= $form->field($addUserEmployeeForm, 'about')->textarea() ?>
     <?= $form->field($addUserEmployeeForm, 'phone') ?>
     <?= $form->field($addUserEmployeeForm, 'skype') ?>
+    <?= $form->field($addUserEmployeeForm, 'token')->hiddenInput()->label(false) ?>
     <?= $form->field($addUserEmployeeForm, 'birthday')->widget(DatePicker::className(), [
         'language' => 'ru',
         'dateFormat' => 'yyyy-MM-dd',

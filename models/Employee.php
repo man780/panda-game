@@ -58,8 +58,10 @@ class Employee extends \yii\db\ActiveRecord
         return [
             [['user_id', 'name', 'fname', 'team_id', 'branch_id', 'position_id', 'role_id'], 'required'],
             [['name', 'fname', 'oname', 'about'], 'required', 'on' => 'new-employee'],
-            [['user_id', 'birthday', 'team_id', 'branch_id', 'position_id', 'role_id', 'join_date'], 'integer'],
+            [['user_id', 'team_id', 'branch_id', 'position_id', 'role_id'], 'integer'],
             [['about'], 'string'],
+            ['user_id', 'unique',
+                'message' => 'Это юзер занято.'],
             [['name', 'fname', 'oname', 'avatar', 'phone', 'email', 'skype'], 'string', 'max' => 255],
             [['branch_id'], 'exist', 'skipOnError' => true, 'targetClass' => Branch::className(), 'targetAttribute' => ['branch_id' => 'id']],
             [['position_id'], 'exist', 'skipOnError' => true, 'targetClass' => Position::className(), 'targetAttribute' => ['position_id' => 'id']],

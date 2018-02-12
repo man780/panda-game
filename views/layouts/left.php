@@ -32,7 +32,7 @@
                 'items' => [
                     ['label' => 'Главная', 'url' => ['/']],
                     ['label' => 'Компания', 'url' => ['/company/index']],
-                    ['label' => 'Игроки', 'url' => ['/employees/index']],
+                    ['label' => 'Игроки', 'url' => ['/employees/gamers']],
                     ['label' => 'Календарь', 'url' => ['/calendar/index']],
                     ['label' => 'Магазин', 'url' => ['/store/index']],
                     ['label' => 'Медиа', 'url' => ['/media/index']],

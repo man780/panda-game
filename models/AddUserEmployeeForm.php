@@ -13,6 +13,7 @@ class AddUserEmployeeForm extends Model
     public $username;
     public $email;
     public $password;
+    public $status;
 
     public $name;
     public $fname;
@@ -24,6 +25,7 @@ class AddUserEmployeeForm extends Model
     public $birthday;
 
     public $verifyCode;
+    public $token;
 
     /**
      * @return array the validation rules.
@@ -33,6 +35,7 @@ class AddUserEmployeeForm extends Model
         return [
             // name, email, subject and body are required
             [['username', 'email', 'password', 'name', 'fname'], 'required'],
+            [['oname', 'about', 'avatar', 'phone', 'skype', 'birthday', 'token'], 'safe'],
             ['username', 'unique',
                 'targetClass' => User::className(),
                 'message' => 'Это имя уже занято.'],
@@ -46,6 +49,31 @@ class AddUserEmployeeForm extends Model
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'user_id' => 'ID user',
+            'name' => 'Имя',
+            'fname' => 'Фамилия',
+            'oname' => 'Отчество',
+            'about' => 'О себе',
+            'avatar' => 'Аватар',
+            'phone' => 'Телефон',
+            'email' => 'Эл-почта',
+            'skype' => 'Скайп',
+            'birthday' => 'Дата рождения',
+            'team_id' => 'Команда',
+            'branch_id' => 'Отдел',
+            'position_id' => 'Должность',
+            'role_id' => 'Роль',
+            'join_date' => 'Время присоединения',
+        ];
+    }
+
     public function reg()
     {
         $user = new User();
@@ -56,6 +84,40 @@ class AddUserEmployeeForm extends Model
         $user->generateAuthKey();
         if($this->scenario === 'emailActivation')
             $user->generateSecretKey();
-        return $user->save() ? $user : null;
+//vd($user);
+        if($user->save()){
+            return $this->addEmployee($user->id);
+
+            //vd($user->errors);
+        }else{
+            return false;
+        }
+    }
+
+    public function addEmployee($user_id){
+        $employee = new Employee();
+        $employee->user_id = $user_id;
+        $employee->name = $this->name;
+        $employee->fname = $this->fname;
+        $employee->oname = $this->oname;
+        $employee->email = $this->email;
+        $employee->about = $this->about;
+        $employee->phone = $this->phone;
+        $employee->skype = $this->skype;
+        $employee->birthday = $this->birthday;
+        $employee->team_id = 1;
+        $employee->branch_id = 1;
+        $employee->position_id = 1;
+        $employee->role_id = 1;
+        $employee->join_date = date('Y-m-d H:i:s');
+        //vd($employee->attributes);
+        if($employee->save()){
+            return true;
+            //vd($employee->errors);
+        }else{
+            //vd($employee->errors);
+            return false;
+        }
+
     }
 }
