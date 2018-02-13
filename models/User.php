@@ -76,6 +76,11 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             TimestampBehavior::className()
         ];
     }
+
+    public function getEmployee()
+    {
+        return $this->hasOne(Employee::className(), ['user_id' => 'id']);
+    }
     /* Поиск */
     /** Находит пользователя по имени и возвращает объект найденного пользователя.
      *  Вызываеться из модели LoginForm.

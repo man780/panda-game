@@ -9,6 +9,7 @@ namespace app\models;
 
 use yii\base\Model;
 use Yii;
+use yii\web\Cookie;
 
 class LoginForm extends Model
 {
@@ -66,9 +67,19 @@ class LoginForm extends Model
 
     public function login()
     {
+        //vd($this);
         if ($this->validate()):
             $this->status = ($user = $this->getUser()) ? $user->status : User::STATUS_NOT_ACTIVE;
             if ($this->status === User::STATUS_ACTIVE):
+                $cookie = new Cookie([
+                    'name' => 'employee_id',
+                    'value' => $user->employee->id,
+                    'expire' => time() + 3600*24*30,
+                ]);
+                \Yii::$app->getResponse()->getCookies()->add($cookie);
+                //$cookies = Yii::$app->request->cookies;
+                //$cookies->getValue('employee_id', $user->employee->id);
+                //vd($user->employee->id);
                 return Yii::$app->user->login($user, $this->rememberMe ? 3600*24*30 : 0);
             else:
                 return false;

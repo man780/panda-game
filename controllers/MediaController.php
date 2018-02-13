@@ -43,7 +43,8 @@ class MediaController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $model->foto_video = 1;
-            $model->employee_id = Yii::$app->user->id;
+            //$user = Yii::$app->user->identity;
+            //$model->employee_id = $user->employee->id;
             //vd(Yii::$app->user->id);
             if($model->save()){
                 return $this->redirect(['media/index']);
