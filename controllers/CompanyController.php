@@ -70,8 +70,7 @@ class CompanyController extends Controller
         $model = new Branch();
 
         if (Yii::$app->request->isAjax &&
-            $model->load(Yii::$app->request->post()) &&
-            $model->validate())
+            $model->load(Yii::$app->request->post()))
         {
 
             $model->file = UploadedFile::getInstance($model, 'file');
@@ -79,16 +78,17 @@ class CompanyController extends Controller
                 $file = $model->file;
                 $model->image = 'images/branches/' . $file->baseName . '.' . $file->extension;
             }
-            //$model->file = null;
-            $model->dcreated = time();
             if($model->save()){
                 if($model->file){
                     $file = $model->file;
+                    $dir = \Yii::getAlias('@app');
                     $file->saveAs($dir.'/web/images/branches/' . $file->baseName . '.' . $file->extension);
+                }else{
+                    vd($model->errors);
                 }
                 return $this->redirect(['company/index']);
             }else{
-                vd($model-errors);
+                vd($model->errors);
             }
         }
         return $this->renderAjax('branch_form', [
@@ -100,10 +100,12 @@ class CompanyController extends Controller
         $this->layout = false;
         $model = new Team();
 
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+        if ($model->load(Yii::$app->request->post())) {
             $model->file = UploadedFile::getInstance($model, 'file');
-
-            $model->dcreated = time();
+            if($model->file){
+                $file = $model->file;
+                $model->image = 'images/teams/' . $file->baseName . '.' . $file->extension;
+            }
             if($model->save()){
                 if($model->file){
                     $file = $model->file;
@@ -114,7 +116,7 @@ class CompanyController extends Controller
                 $model->file = null;
                 return $this->redirect(['company/index']);
             }else{
-                vd($model-errors);
+                vd($model->errors);
             }
         }
         $class = new Branch();

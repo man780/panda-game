@@ -72,7 +72,7 @@ class BranchController extends Controller
             if($model->file){
                 $file = $model->file;
                 $baseName = join('_', array_map('trim', explode(' ', $file->baseName)));
-                $model->image = $baseName. '.' . $file->extension;
+                $model->image = 'images/branches/' . $baseName. '.' . $file->extension;
             }
             if($model->save()){
                 if($model->file){

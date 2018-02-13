@@ -48,6 +48,16 @@ class Branch extends \yii\db\ActiveRecord
         ];
     }
 
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            $this->dcreated = date('Y-m-d H:i:s');
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     /**
      * @inheritdoc
      */
