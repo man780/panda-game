@@ -86,4 +86,12 @@ class Team extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Branch::className(), ['id' => 'branch_id']);
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getList()
+    {
+        return self::find()->where(['>', 'id', 2])->all();
+    }
 }

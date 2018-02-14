@@ -12,7 +12,7 @@ use Yii;
  * @property string $description
  * @property int $foto_video
  * @property int $employee_id
- * @property int $created_time
+ * @property int $dcreated
  *
  * @property Employee $employee
  */
@@ -51,17 +51,14 @@ class Media extends \yii\db\ActiveRecord
             'description' => Yii::t('app', 'Описания'),
             'foto_video' => Yii::t('app', 'Foto Video'),
             'employee_id' => Yii::t('app', 'Сотрудник'),
-            'created_time' => Yii::t('app', 'Время создания'),
+            'dcreated' => Yii::t('app', 'Время создания'),
         ];
     }
 
     public function beforeSave($insert)
     {
         if (parent::beforeSave($insert)) {
-
-            //$this->employee_id = \Yii::$app->user->id;
-            $this->created_time = time();
-
+            $this->dcreated = date('Y-m-d H:i:s', time()+2*3600);
             return true;
         }
         return false;

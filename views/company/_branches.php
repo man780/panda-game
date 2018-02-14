@@ -23,9 +23,32 @@ use yii\widgets\ActiveForm;
 <div>
     <h2>Список отделов</h2>
     <?foreach ($branches as $branch):?>
-            <?=Html::img([$branch->image, ['class' => 'img img-responsive', 'style' => ['height' => '100px']]]);?>
-        <?=$branch->name;?>
-        <?=count($branch->employees);?>
+        <div class="row">
+            <div class="col-md-1">
+                <?=Html::img('/'.$branch->image, ['height' => '50px']);?>
+            </div>
+            <div class="col-md-10">
+                <p><?=$branch->name;?></p>
+                <p>
+                    Игроков: <?=count($branch->employees);?>
+                    Команд: <?=count($branch->teams);?>
+                </p>
+            </div>
+            <div class="col-md-1">
+                <?= Html::a('<i class="glyphicon glyphicon-pencil"></i>', null, [
+                        'class' => 'updateBranchButton',
+                        'value' => Url::toRoute(['/company/update-branch', 'id' => $branch->id])
+                ]);
+                ?>
+                <?=Html::a('<i class="glyphicon glyphicon-trash"></i>',
+                                Url::to(['/company/delete-branch', 'id' => $branch->id]),
+                                ['data' => [
+                                    'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
+                                    'method' => 'post',
+                                ]]
+                    );?>
+            </div>
+        </div>
         <hr>
     <?endforeach;?>
 </div>

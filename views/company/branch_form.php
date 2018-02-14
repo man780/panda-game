@@ -18,6 +18,7 @@ Pjax::begin(['id' => 'banner-form']) ?>
     ],
 ]);
 ?>
+<h2><?=$this->title;?></h2>
 <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 <?= $form->field($model, 'file')
     ->fileInput([
@@ -25,7 +26,7 @@ Pjax::begin(['id' => 'banner-form']) ?>
     ])
 ?>
 
-<?= Html::submitButton(Yii::t('app', 'Create') , ['class' => 'btn btn-primary']) ?>
+<?= Html::submitButton(Yii::t('app', 'Save') , ['class' => 'btn btn-primary']) ?>
 
 <?php ActiveForm::end(); ?>
 <?php Pjax::end(); ?>

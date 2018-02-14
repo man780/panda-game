@@ -40,7 +40,7 @@ class Branch extends \yii\db\ActiveRecord
 
             [['name'], 'required'],
             //[['dcreated'], 'integer'],
-            [['file'], 'file', 'skipOnEmpty' => false,
+            [['file'], 'file', 'skipOnEmpty' => true,
                 'extensions' => ['jpg', 'jpeg', 'png', 'gif']
             ],
             [['name'], 'string', 'max' => 255],
@@ -98,6 +98,14 @@ class Branch extends \yii\db\ActiveRecord
 
     public function getBranchesAll()
     {
-        return ArrayHelper::map(Branch::find()->asArray()->all(), 'id', 'name');
+        return ArrayHelper::map(Branch::find()->where(['>', 'id', 2])->asArray()->all(), 'id', 'name');
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getList()
+    {
+        return self::find()->where(['>', 'id', 2])->all();
     }
 }

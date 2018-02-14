@@ -36,15 +36,15 @@
                     ['label' => 'Календарь', 'url' => ['/calendar/index']],
                     ['label' => 'Магазин', 'url' => ['/store/index']],
                     ['label' => 'Медиа', 'url' => ['/media/index']],
-                    ['label' => 'Достижения', 'url' => ['/company/index']],
+                    ['label' => 'Достижения', 'url' => ['/achievements/index']],
                     ['label' => 'Новости', 'url' => ['/news/index']],
-                    ['label' => 'Объявления', 'url' => ['/company/index']],
+                    ['label' => 'Объявления', 'url' => ['/ads/index']],
                     ['label' => 'Роли', 'url' => ['/roles/index']],
                     ['label' => 'Контент', 'url' => ['/content/index']],
 
                     ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii']],
                     //['label' => 'Debug', 'icon' => 'dashboard', 'url' => ['/debug']],
-                    ['label' => 'Login', 'url' => ['site/login'], 'visible' => Yii::$app->user->isGuest],
+                    //['label' => 'Login', 'url' => ['site/login'], 'visible' => Yii::$app->user->isGuest],
                     /*[
                         'label' => 'Some tools',
                         'icon' => 'share',

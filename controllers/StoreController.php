@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Product;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -51,6 +52,16 @@ class StoreController extends Controller
 
     public function actionIndex()
     {
+        $this->view->title = 'Магазин';
         return $this->render('index');
+    }
+
+    public function actionCreate(){
+        $this->layout = false;
+        $this->view->title = 'Добавить новый товар';
+        $model = new Product();
+        return $this->render('form', [
+            'model' => $model,
+        ]);
     }
 }

@@ -18,6 +18,7 @@ Pjax::begin(['id' => 'banner-form']) ?>
     //'' => '',
 ]);
 ?>
+<h1><?=$this->title?></h1>
 <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 <?= $form->field($model, 'description')->textarea(['maxlength' => true]) ?>
 

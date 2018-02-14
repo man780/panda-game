@@ -2,15 +2,7 @@
 use yii\bootstrap\Html;
 use yii\helpers\Url;
 ?>
-<style>
-    .add-album{
-        width: 100%;
-        height: 100%;
-        border: 1px dashed #0099FF;
-        text-align: center;
-        color: #0099FF;
-    }
-</style>
+
 <div class="main-container">
     <div class="row">
         <div class="col-md-12">
@@ -25,20 +17,19 @@ use yii\helpers\Url;
                     <div class="col-md-4">
                         <div class="add-album">
                             <?= Html::a(Yii::t('app', 'Создать навый фотоальбом'), null,
-                                ['class' => '', 'id'=>'createFotoButton',
-                                'value'=>Url::toRoute(['/media/create-foto'])]) ?>
+                                ['class' => 'create-foto-album', 'id'=>'createFotoButton',
+                                'value'=>Url::toRoute(['/media/create-foto-album'])]) ?>
                         </div>
                     </div>
+
+                    <? foreach ($fotoAlbums as $fotoAlbum):?>
                     <div class="col-md-4">
                         <div class="item-album">
-                            Альбомов нет
+                            <?=Html::a($fotoAlbum->name, Url::to(['media/show-fotoes', 'id' => $fotoAlbum->id]));?>
+                            <p class="date"><?=$fotoAlbum->dcreated?></p>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="item-album">
-                            Альбомов нет
-                        </div>
-                    </div>
+                    <?endforeach;?>
                 </div>
             </div>
         </div>
@@ -51,19 +42,25 @@ use yii\helpers\Url;
 
                             <?= Html::a(Yii::t('app', 'Создать навый видеоальбом'), null,
                                 ['class' => '', 'id'=>'createVideoButton',
-                                    'value'=>Url::toRoute(['/media/create-video'])]) ?>
+                                    'value'=>Url::toRoute(['/media/create-video-album'])]) ?>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="item-album">
-                            Альбомов нет
+                    <?if(count($videoAlbums)>0):?>
+                    <? foreach ($videoAlbums as $videoAlbum):?>
+                        <div class="col-md-4">
+                            <div class="item-album">
+                                <?=Html::a($videoAlbum->name, Url::to(['media/show-videos', 'id' => $videoAlbum->id]));?>
+                                <p class="date"><?=$videoAlbum->dcreated?></p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="item-album">
-                            Альбомов нет
+                    <?endforeach;?>
+                    <?else:?>
+                        <div class="col-md-4">
+                            <div class="item-album">
+                                Видеоольбомов пока нет
+                            </div>
                         </div>
-                    </div>
+                    <?endif;?>
                 </div>
             </div>
         </div>

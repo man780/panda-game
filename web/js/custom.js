@@ -8,7 +8,19 @@ $(function(){
             .load($(this).attr('value'));
     });
 
+    $(".updateBranchButton").click(function(){
+        $("#modal").modal('show')
+            .find('#modalContentBackend')
+            .load($(this).attr('value'));
+    });
+
     $("#createTeamButton").click(function(){
+        $("#modal").modal('show')
+            .find('#modalContentBackend')
+            .load($(this).attr('value'));
+    });
+
+    $(".updateTeamButton").click(function(){
         $("#modal").modal('show')
             .find('#modalContentBackend')
             .load($(this).attr('value'));
@@ -58,6 +70,12 @@ $(function(){
     });
 
     $("#createProductButton").click(function(){
+        $("#modal").modal('show')
+            .find('#modalContentBackend')
+            .load($(this).attr('value'));
+    });
+
+    $(".openModalForm").click(function(){
         $("#modal").modal('show')
             .find('#modalContentBackend')
             .load($(this).attr('value'));

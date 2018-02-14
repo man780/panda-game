@@ -5,5 +5,3 @@
  * Date: 11.01.2018
  * Time: 15:24
  */
-
-    vd(\Yii::$app->request->cookies);
