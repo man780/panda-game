@@ -23,18 +23,20 @@ $this->beginPage();
     <!DOCTYPE html>
     <html lang="<?= Yii::$app->language ?>">
     <head>
+
         <?= Html::csrfMetaTags() ?>
         <meta charset="<?= Yii::$app->charset ?>">
         <?php $this->registerMetaTag(['name' => 'viewport', 'content' => 'width=device-width, initial-scale=1']); ?>
         <title><?= Yii::$app->name ?></title>
         <?php $this->head() ?>
+        <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
     </head>
     <body>
     <?php $this->beginBody(); ?>
 
     <hgroup>
-        <h1>Panda Task</h1>
-        <h3>By Murod</h3>
+        <h1>Panda Game</h1>
+        <h3>By Panda</h3>
     </hgroup>
 
     <div class="wrap">

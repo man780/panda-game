@@ -69,8 +69,11 @@ class LoginForm extends Model
     {
         //vd($this);
         if ($this->validate()):
+
             $this->status = ($user = $this->getUser()) ? $user->status : User::STATUS_NOT_ACTIVE;
+            //vd([$this->status , User::STATUS_ACTIVE, $this]);
             if ($this->status === User::STATUS_ACTIVE):
+
                 $cookie = new Cookie([
                     'name' => 'employee_id',
                     'value' => $user->employee->id,
@@ -80,6 +83,7 @@ class LoginForm extends Model
                 //$cookies = Yii::$app->request->cookies;
                 //$cookies->getValue('employee_id', $user->employee->id);
                 //vd($user->employee->id);
+
                 return Yii::$app->user->login($user, $this->rememberMe ? 3600*24*30 : 0);
             else:
                 return false;

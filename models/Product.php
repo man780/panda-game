@@ -16,7 +16,7 @@ use Yii;
  * @property int $is_team
  * @property string $image
  * @property int $created_user
- * @property string $dcreated
+ * @property int $created_time
  *
  * @property User $createdUser
  * @property ProductEmployee[] $productEmployees
@@ -38,10 +38,9 @@ class Product extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'cost', 'quantity', 'quantity_max', 'created_user'], 'required'],
+            [['name', 'cost', 'quantity_max'], 'required'],
             [['description'], 'string'],
             [['cost', 'quantity', 'quantity_max', 'is_team', 'created_user'], 'integer'],
-            [['dcreated'], 'safe'],
             [['name', 'image'], 'string', 'max' => 255],
             [['created_user'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_user' => 'id']],
         ];
@@ -62,8 +61,26 @@ class Product extends \yii\db\ActiveRecord
             'is_team' => Yii::t('app', 'Is Team'),
             'image' => Yii::t('app', 'Image'),
             'created_user' => Yii::t('app', 'Created User'),
-            'dcreated' => Yii::t('app', 'Dcreated'),
+            'created_time' => Yii::t('app', 'Created Time'),
         ];
+    }
+
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            if ($insert) {
+                $this->created_user = Yii::$app->user->id;
+                $this->created_time = date('Y-m-d H:i:s');
+                $this->quantity = $this->quantity_max;
+
+                Yii::$app->session->setFlash('success', 'Запись добавлена!');
+            } else {
+                Yii::$app->session->setFlash('success', 'Запись обновлена!');
+            }
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**

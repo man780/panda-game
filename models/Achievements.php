@@ -34,11 +34,14 @@ class Achievements extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'reward', 'status_achievement', 'created_user'], 'required'],
+            [['name', 'reward', 'status_achievement'], 'required'],
             [['description'], 'string'],
             [['reward', 'created_user'], 'integer'],
-            [['dcreated'], 'safe'],
-            [['name', 'status_achievement', 'image'], 'string', 'max' => 255],
+            [['dcreated', 'image'], 'safe'],
+            [['image'], 'file', 'skipOnEmpty' => true,
+                'extensions' => ['jpg', 'jpeg', 'png', 'gif']
+            ],
+            [['name', 'status_achievement'], 'string', 'max' => 255],
             [['created_user'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_user' => 'id']],
         ];
     }
@@ -56,8 +59,24 @@ class Achievements extends \yii\db\ActiveRecord
             'status_achievement' => Yii::t('app', 'Status Achievement'),
             'image' => Yii::t('app', 'Image'),
             'created_user' => Yii::t('app', 'Created User'),
-            'dcreated' => Yii::t('app', 'Dcreated'),
+            'created_time' => Yii::t('app', 'Dcreated'),
         ];
+    }
+
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            if ($insert) {
+                $this->created_user = Yii::$app->user->id;
+                $this->dcreated = date('Y-m-d H:i:s');
+                Yii::$app->session->setFlash('success', 'Запись добавлена!');
+            } else {
+                Yii::$app->session->setFlash('success', 'Запись обновлена!');
+            }
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**

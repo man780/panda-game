@@ -31,7 +31,34 @@ $invites = Invite::find()->where(['status' => 1])->all();
                 </div>
                 <?php ActiveForm::end(); ?>
             </div>
-            <br><br><br><br><br><br><br>
+            <div class="userList">
+                <h2>Список отделов</h2>
+                <?foreach ($employees as $employee):?>
+                    <div class="row">
+                        <div class="col-md-1">
+                            <?=Html::img('/'.$employee->avatar, ['height' => '50px']);?>
+                        </div>
+                        <div class="col-md-9">
+                            <p><?=$employee->fname;?> <?=$employee->name;?></p>
+                        </div>
+                        <div class="col-md-2">
+                            <?= Html::a('<i class="glyphicon glyphicon-pencil"></i>', null, [
+                                'class' => 'updateBranchButton',
+                                'value' => Url::toRoute(['/employees/update', 'id' => $employee->id])
+                            ]);
+                            ?>
+                            <?=Html::a('<i class="glyphicon glyphicon-trash"></i>',
+                                Url::to(['/employees/delete', 'id' => $employee->id]),
+                                ['data' => [
+                                    'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
+                                    'method' => 'post',
+                                ]]
+                            );?>
+                        </div>
+                    </div>
+                    <hr>
+                <?endforeach;?>
+            </div>
         </div>
         <div class="col-md-4">
             <h3>Пригласить игрока</h3>
@@ -60,14 +87,26 @@ $invites = Invite::find()->where(['status' => 1])->all();
         </div>
         <div class="col-md-4">
             <h3>Приглашённые</h3>
-            <?//vd($model);?>
+            <?if($invites):?>
             <?foreach($invites as $invite):?>
                 <div>
                     <?=Html::a($invite->fio, Url::to(['employees/save-user', 'invite_id'=>$invite->id]))?>
                 </div>
-
             <?endforeach;?>
+            <?else:?>
+                Приглашенных нет
+            <?endif;?>
 
+            <h3>Для подтверждения</h3>
+            <?if($invites):?>
+                <?foreach($toConfirmList as $toConfirm):?>
+                    <div>
+                        <?=Html::a($toConfirm->fname. ' ' .$toConfirm->name, Url::to(['employees/confirm-employee', 'employee_id'=>$toConfirm->id]))?>
+                    </div>
+                <?endforeach;?>
+            <?else:?>
+                Приглашенных нет
+            <?endif;?>
         </div>
     </div>
 </div>

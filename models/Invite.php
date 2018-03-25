@@ -12,11 +12,8 @@ use yii\helpers\Url;
  * @property string $fio
  * @property string $email
  * @property string $date_begin
-<<<<<<< HEAD
  * @property string $invite_code
  * @property int $status
-=======
->>>>>>> f223ae128548b3e83fc23fea9e627af68d184621
  * @property int $dcreated
  */
 class Invite extends \yii\db\ActiveRecord
@@ -75,20 +72,13 @@ class Invite extends \yii\db\ActiveRecord
         $this->status = 0;
         $this->dcreated = date('Y-m-d H:i:s');
         $url = Url::toRoute(['employees/confirm-email', 'email' => $this->email, 'token' => $this->invite_code]);
-        return /*Yii::$app->mailer->compose()
+        $flag = Yii::$app->mailer->compose()
             ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name.' (отправлено роботом)'])
             ->setTo($this->email)
-            ->setSubject('Message subject')
-            ->setTextBody('Plain text content')
-            ->setHtmlBody('<b>HTML content</b>')
-            ->send();*/
-            Yii::$app->mailer->compose()
-                ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name.' (отправлено роботом)'])
-                ->setTo($this->email)
-                ->setSubject('Приглашения от '.Yii::$app->name)
-                ->setHtmlBody('<b>'.$this->fio.'</b> <a href="'.Yii::$app->getRequest()->serverName.$url.'">Перейти по ссылке</a>')
-                ->send();
-        //vd($this->attributes); die;
+            ->setSubject('Приглашения от '.Yii::$app->name)
+            ->setHtmlBody('<b>'.$this->fio.'</b> <a href="'.Yii::$app->getRequest()->serverName.$url.'">Перейти по ссылке</a>')
+            ->send();
+        return $flag;
     }
 
     /**
@@ -101,7 +91,7 @@ class Invite extends \yii\db\ActiveRecord
                 ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name.' (отправлено роботом)'])
                 ->setTo($this->email)
                 ->setSubject('Приглашения подтверждено '.Yii::$app->name)
-                ->setHtmlBody('<b>'.$invite->fio.'</b> G <a href="'.Yii::$app->getRequest()->serverName.'">Перейти по ссылке</a>')
+                ->setHtmlBody('<b>'.$invite->fio.'</b>  <a href="'.Yii::$app->getRequest()->serverName.'">Перейти по ссылке</a>')
                 ->send();
     }
 }

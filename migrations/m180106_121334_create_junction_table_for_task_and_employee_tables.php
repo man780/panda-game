@@ -19,7 +19,7 @@ class m180106_121334_create_junction_table_for_task_and_employee_tables extends 
         $this->createTable('task_employee', [
             'task_id' => $this->integer(),
             'employee_id' => $this->integer(),
-            'created_at' => $this->integer(),
+            'created_at' => $this->dateTime(),
             'status' => $this->integer(),
             'PRIMARY KEY(task_id, employee_id)',
         ]);

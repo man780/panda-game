@@ -58,6 +58,7 @@ class Employee extends \yii\db\ActiveRecord
         return [
             [['user_id', 'name', 'fname', 'team_id', 'branch_id', 'position_id', 'role_id'], 'required'],
             [['name', 'fname', 'oname', 'about'], 'required', 'on' => 'new-employee'],
+            [['birthday', 'join_date'], 'safe'],
             [['user_id', 'team_id', 'branch_id', 'position_id', 'role_id'], 'integer'],
             [['about'], 'string'],
             ['user_id', 'unique',
@@ -75,9 +76,8 @@ class Employee extends \yii\db\ActiveRecord
     {
         if (parent::beforeSave($insert)) {
             if ($insert) {
-
-
                 Yii::$app->session->setFlash('success', 'Запись добавлена!');
+                $this->join_date = date('Y-m-d H:i:s');
             } else {
                 Yii::$app->session->setFlash('success', 'Запись обновлена!');
             }
@@ -93,22 +93,22 @@ class Employee extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'user_id' => 'User ID',
-            'name' => 'Name',
-            'fname' => 'Fname',
-            'oname' => 'Oname',
-            'about' => 'About',
-            'avatar' => 'Avatar',
-            'phone' => 'Phone',
-            'email' => 'Email',
-            'skype' => 'Skype',
-            'birthday' => 'Birthday',
-            'team_id' => 'Team ID',
-            'branch_id' => 'Branch ID',
-            'position_id' => 'Position ID',
-            'role_id' => 'Role ID',
-            'join_date' => 'Join Date',
+            'id' => Yii::t('app', 'ID'),
+            'user_id' => Yii::t('app', 'User ID'),
+            'name' => Yii::t('app', 'Name1'),
+            'fname' => Yii::t('app', 'Fname'),
+            'oname' => Yii::t('app', 'Oname'),
+            'about' => Yii::t('app', 'About'),
+            'avatar' => Yii::t('app', 'Avatar'),
+            'phone' => Yii::t('app', 'Phone'),
+            'email' => Yii::t('app', 'Email'),
+            'skype' => Yii::t('app', 'Skype'),
+            'birthday' => Yii::t('app', 'Birthday'),
+            'team_id' => Yii::t('app', 'Team ID'),
+            'branch_id' => Yii::t('app', 'Branch ID'),
+            'position_id' => Yii::t('app', 'Position ID'),
+            'role_id' => Yii::t('app', 'Role ID'),
+            'join_date' => Yii::t('app', 'Join Date'),
         ];
     }
 
@@ -118,6 +118,22 @@ class Employee extends \yii\db\ActiveRecord
     public function getDocuments()
     {
         return $this->hasMany(Documents::className(), ['employee_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTransferFrom()
+    {
+        return $this->hasMany(TransferRate::className(), ['from_employee' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTransferTo()
+    {
+        return $this->hasMany(TransferRate::className(), ['to_employee' => 'id']);
     }
 
     /**
@@ -166,6 +182,14 @@ class Employee extends \yii\db\ActiveRecord
     public function getEmployeeRates()
     {
         return $this->hasMany(EmployeeRate::className(), ['employee_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getEmployeeRate()
+    {
+        return $this->hasOne(EmployeeRate::className(), ['employee_id' => 'id']);
     }
 
     /**
@@ -230,5 +254,13 @@ class Employee extends \yii\db\ActiveRecord
     public function getTasks0()
     {
         return $this->hasMany(Task::className(), ['id' => 'task_id'])->viaTable('task_employee', ['employee_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAchievements()
+    {
+        return $this->hasMany(Achievements::className(), ['id' => 'achievement_id'])->viaTable('achievements_employee', ['employee_id' => 'id']);
     }
 }

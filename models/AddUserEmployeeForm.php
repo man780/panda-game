@@ -90,7 +90,7 @@ class AddUserEmployeeForm extends Model
 
             //vd($user->errors);
         }else{
-            return false;
+            vd($user->errors);
         }
     }
 
@@ -115,9 +115,8 @@ class AddUserEmployeeForm extends Model
             return true;
             //vd($employee->errors);
         }else{
-            //vd($employee->errors);
-            return false;
+            vd($employee->errors);
+            //return false;
         }
-
     }
 }

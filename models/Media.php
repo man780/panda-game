@@ -12,6 +12,7 @@ use Yii;
  * @property string $description
  * @property int $foto_video
  * @property int $employee_id
+ * @property string $items
  * @property int $dcreated
  *
  * @property Employee $employee
@@ -34,7 +35,7 @@ class Media extends \yii\db\ActiveRecord
         return [
             [['name'], 'required'],
             [['description'], 'string'],
-            //[['foto_video', 'employee_id', 'created_time'], 'integer'],
+            [['foto_video', 'employee_id', 'items', 'created_time'], 'safe'],
             [['name'], 'string', 'max' => 255],
             [['employee_id'], 'exist', 'skipOnError' => true, 'targetClass' => Employee::className(), 'targetAttribute' => ['employee_id' => 'id']],
         ];
@@ -51,14 +52,17 @@ class Media extends \yii\db\ActiveRecord
             'description' => Yii::t('app', 'Описания'),
             'foto_video' => Yii::t('app', 'Foto Video'),
             'employee_id' => Yii::t('app', 'Сотрудник'),
-            'dcreated' => Yii::t('app', 'Время создания'),
+            'created_time' => Yii::t('app', 'created_time'),
+            'items' => Yii::t('app', 'Items'),
         ];
     }
 
     public function beforeSave($insert)
     {
         if (parent::beforeSave($insert)) {
-            $this->dcreated = date('Y-m-d H:i:s', time()+2*3600);
+            $cookies = Yii::$app->request->cookies;
+            $this->employee_id = $cookies->getValue('employee_id');
+            $this->created_time = date('Y-m-d H:i:s', time()+2*3600);
             return true;
         }
         return false;

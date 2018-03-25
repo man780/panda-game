@@ -31,11 +31,15 @@ if (Yii::$app->controller->action->id === 'login') {
     <!DOCTYPE html>
     <html lang="<?= Yii::$app->language ?>">
     <head>
+
         <meta charset="<?= Yii::$app->charset ?>"/>
         <meta name="viewport" content="width=device-width, initial-scale=1">
+
         <?= Html::csrfMetaTags() ?>
         <title><?=Yii::$app->name;?> :: <?= Html::encode($this->title) ?></title>
+        <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
         <?php $this->head() ?>
+
     </head>
     <body class="hold-transition skin-blue sidebar-mini">
     <?php $this->beginBody() ?>

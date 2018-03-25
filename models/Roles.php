@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "roles".
@@ -15,6 +16,12 @@ use Yii;
  */
 class Roles extends \yii\db\ActiveRecord
 {
+    public $priorities = [
+        4 => 'Босс',
+        1 => 'Руководитель',
+        2 => 'Начальник отдела',
+        3 => 'Сотрудник',
+    ];
     /**
      * @inheritdoc
      */
@@ -53,5 +60,23 @@ class Roles extends \yii\db\ActiveRecord
     public function getEmployees()
     {
         return $this->hasMany(Employee::className(), ['role_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getList()
+    {
+        return self::find()->where(['>', 'id', 1])->all();
+    }
+
+    public function getPriorities($id = null){
+        if(is_null($id)){
+            return $this->priorities;
+        }else{
+            //vd($id);
+            return $this->priorities[$id];
+        }
+
     }
 }

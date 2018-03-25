@@ -36,9 +36,9 @@ class Team extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'branch_id', 'file'], 'required'],
+            [['name', 'branch_id'], 'required'],
             [['branch_id'], 'integer'],
-            [['file'], 'file', 'skipOnEmpty' => false,
+            [['file'], 'file', 'skipOnEmpty' => true,
                 'extensions' => ['jpg', 'jpeg', 'png', 'gif']
             ],
             [['name', 'image'], 'string', 'max' => 255],
@@ -92,6 +92,6 @@ class Team extends \yii\db\ActiveRecord
      */
     public function getList()
     {
-        return self::find()->where(['>', 'id', 2])->all();
+        return self::find()->where(['>', 'id', 1])->all();
     }
 }

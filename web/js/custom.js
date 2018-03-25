@@ -80,4 +80,9 @@ $(function(){
             .find('#modalContentBackend')
             .load($(this).attr('value'));
     });
+
+    $('.achievement-item').click(function(){
+        $(this).toggleClass('gray');
+        alert(1);
+    });
 });

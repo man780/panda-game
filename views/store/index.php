@@ -1,20 +1,22 @@
 <?
-use yii\helpers\Html;
-use yii\helpers\Url;
+use yii\bootstrap\Tabs;
 ?>
-<style>
-    .product-item{
-        width: 24%;
-        float: left;
-        text-align: center;
-    }
-</style>
-<div class="product-list">
-    <div class="product-item">
-        <?= Html::a(Yii::t('app', 'Добавить новый товар'), null, ['class' => 'openModalForm',
-            'value'=>Url::toRoute(['/store/create'])]) ?>
-    </div>
-    <div class="product-item">
-        1
+<div>
+    <div class="box container">
+<?
+echo Tabs::widget([
+    'items' => [
+        [
+            'label' => 'Товары',
+            'content' => $this->render('_products', ['productList' => $productList]),
+            'active' => true
+        ],
+        [
+            'label' => 'Мои покупки',
+            'content' => $this->render('_my_sales', ['myProductList' => $myProductList]),
+        ],
+    ],
+]);
+?>
     </div>
 </div>

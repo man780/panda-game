@@ -8,6 +8,7 @@ use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
+use yii\web\NotFoundHttpException;
 use yii\web\UploadedFile;
 
 class NewsController extends Controller
@@ -18,19 +19,11 @@ class NewsController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout'],
                 'rules' => [
                     [
-                        'actions' => ['index', 'create', 'update', 'delete'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
-                ],
-            ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'logout' => ['post'],
                 ],
             ],
         ];
@@ -41,35 +34,36 @@ class NewsController extends Controller
         $this->view->title = 'Новости';
         $news = News::find()->all();
         return $this->render('index', [
-            'news' => $news,
+            'newsList' => $news,
         ]);
     }
 
-    public  function actionCreate(){
-        $this->view->title = 'Добавить новость';
-        $news = new News();
-        if(Yii::$app->request->isAjax && $news->load(Yii::$app->request->post())){
-            $news->file = UploadedFile::getInstance($news, 'file');
-            $time = date('YmdHis');
-            if($news->file){
-                $file = $news->file;
-                $news->image = 'images/news/' . $file->baseName.'-'.$time . '.' . $file->extension;
-            }
-            if($news->save()){
-                if($news->file){
-                    $file = $news->file;
-                    $dir = \Yii::getAlias('@app');
-                    $file->saveAs($dir.'/web/images/news/' . $file->baseName.'-'.$time . '.' . $file->extension);
-                }
-                return $this->redirect(['news/index']);
-            }else{
-                vd($news->errors);
-            }
+    /**
+     * Displays a single Branch model.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionView($id)
+    {
+        return $this->render('view', [
+            'model' => $this->findModel($id),
+        ]);
+    }
+
+    /**
+     * Finds the Ads model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @return Ads the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findModel($id)
+    {
+        if (($model = News::findOne($id)) !== null) {
+            return $model;
         }
 
-        //vd($news);
-        return $this->renderAjax('news_form', [
-            'model' => $news,
-        ]);
+        throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     }
 }

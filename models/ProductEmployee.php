@@ -31,7 +31,8 @@ class ProductEmployee extends \yii\db\ActiveRecord
     {
         return [
             [['product_id', 'employee_id'], 'required'],
-            [['product_id', 'employee_id', 'created_at'], 'integer'],
+            [['product_id', 'employee_id'], 'integer'],
+            [['created_at'], 'safe'],
             [['product_id', 'employee_id'], 'unique', 'targetAttribute' => ['product_id', 'employee_id']],
             [['employee_id'], 'exist', 'skipOnError' => true, 'targetClass' => Employee::className(), 'targetAttribute' => ['employee_id' => 'id']],
             [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => Product::className(), 'targetAttribute' => ['product_id' => 'id']],
@@ -48,6 +49,22 @@ class ProductEmployee extends \yii\db\ActiveRecord
             'employee_id' => Yii::t('app', 'Employee ID'),
             'created_at' => Yii::t('app', 'Created At'),
         ];
+    }
+
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            if ($insert) {
+                $this->created_at = date('Y-m-d H:i:s');
+
+                Yii::$app->session->setFlash('success', 'Запись добавлена!');
+            } else {
+                Yii::$app->session->setFlash('success', 'Запись обновлена!');
+            }
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**

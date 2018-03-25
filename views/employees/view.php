@@ -6,43 +6,53 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\Employee */
 
-$this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Employees'), 'url' => ['index']];
+$this->title = $model->fname.' '.$model->name;
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="employee-view">
+<br>
+<div class="employee-view box">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
-                'method' => 'post',
-            ],
-        ]) ?>
-    </p>
 
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
             'id',
-            'user_id',
+            [
+                'attribute' => 'avatar',
+                'value' => Html::img('/'.$model->avatar, ['style' => ['height' => '50px']]),
+                'format' => 'html',
+            ],
+            [
+                'attribute' => 'user_id',
+                'value' => $model->user->username,
+            ],
             'name',
             'fname',
             'oname',
             'about:ntext',
-            'avatar',
+
             'phone',
             'email:email',
             'skype',
             'birthday',
-            'team_id',
-            'branch_id',
-            'position_id',
-            'role_id',
+            [
+                'attribute' => 'branch_id',
+                'value' => $model->branch->name,
+            ],
+            [
+                'attribute' => 'team_id',
+                'value' => $model->team->name,
+            ],
+            [
+                'attribute' => 'position_id',
+                'value' => $model->position->name,
+            ],
+            [
+                'attribute' => 'role_id',
+                'value' => $model->role->name,
+            ],
             'join_date',
         ],
     ]) ?>

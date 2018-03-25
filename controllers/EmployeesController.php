@@ -3,12 +3,20 @@
 namespace app\controllers;
 
 use app\models\AddUserEmployeeForm;
+use app\models\EmployeeRate;
+use app\models\SendRateForm;
+use app\models\Branch;
 use app\models\Invite;
+use app\models\Position;
+use app\models\Roles;
+use app\models\Team;
+use app\models\TransferRate;
 use app\models\User;
 use Yii;
 use app\models\Employee;
 use app\models\EmployeeSerach;
 use yii\filters\AccessControl;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -18,6 +26,7 @@ use yii\filters\VerbFilter;
  */
 class EmployeesController extends Controller
 {
+    public $defaultAction = 'gamers';
     /**
      * @inheritdoc
      */
@@ -31,6 +40,11 @@ class EmployeesController extends Controller
                         'allow' => true,
                         'roles' => ['@'],
                     ],
+                    [
+                        'actions' => ['confirm-email', 'add-user-employee'],
+                        'allow' => true,
+                        'roles' => ['?'],
+                    ],
                 ],
             ],
             'verbs' => [
@@ -42,29 +56,17 @@ class EmployeesController extends Controller
         ];
     }
 
-    /**
-     * Lists all Employee models.
-     * @return mixed
-     */
-    public function actionIndex()
-    {
-        $searchModel = new EmployeeSerach();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
-    }
 
     public function actionGamers(){
-        $employees = Employee::find()->all();
+        $employees = Employee::find()->where(['>', 'branch_id', 1])->all();
         $model = new Employee();
         $invite = new Invite();
+        $toConfirmList = Employee::find()->where(['branch_id' => 1])->all();
         return $this->render('gamers', [
             'employees' => $employees,
             'model' => $model,
             'invite' => $invite,
+            'toConfirmList' => $toConfirmList,
         ]);
     }
 
@@ -116,8 +118,9 @@ class EmployeesController extends Controller
         $invite = Invite::find()->where(['invite_code' => $user->token])->one();
         //vd($invite);
         $invite->status = 0;
+        //vd($user);
         if($user->reg() && $invite->save()){
-            return $this->redirect('/index');
+            return $this->redirect('/');
             //vd([$user, $post]);
         }else{
             vd($invite->errors);
@@ -126,11 +129,43 @@ class EmployeesController extends Controller
     }
 
     public function actionSaveUser($invite_id){
-
-        //$model = new
-
+        //$model = $this->f
         return $this->render('save-user', [
-            'model' => $model,
+            //'model' => $model,
+        ]);
+    }
+
+    public function actionConfirmEmployee($employee_id){
+
+        $this->view->title = 'Подтверждения сотрудника админом';
+        $employee = Employee::find()->where(['id' => $employee_id])->one();
+
+        if ($employee->load(Yii::$app->request->post())) {
+            $user = $employee->user;
+            $user->status = 10;
+            if($employee->save() && $user->save()){
+                return $this->redirect(['gamers']);
+            }else{
+                vd($employee->errors);
+                vd($user->errors);
+            }
+        }
+
+        $branch = new Branch();
+        $team = new Team();
+        $position = new Position();
+        $role = new Roles();
+        $branches = ArrayHelper::map($branch->getList(), 'id', 'name');
+        $teams = ArrayHelper::map($team->getList(), 'id', 'name');
+        $positions = ArrayHelper::map($position->getList(), 'id', 'name');
+        $roles = ArrayHelper::map($role->getList(), 'id', 'name');
+
+        return $this->render('confirm-employee', [
+            'employee' => $employee,
+            'branches' => $branches,
+            'teams' => $teams,
+            'positions' => $positions,
+            'roles' => $roles,
         ]);
     }
 
@@ -147,57 +182,75 @@ class EmployeesController extends Controller
         ]);
     }
 
-    /**
-     * Creates a new Employee model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-    {
-        $model = new Employee();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
-
-        return $this->render('create', [
-            'model' => $model,
+    public function actionRating(){
+        $employee = Employee::find()->where(['user_id' => Yii::$app->user->id])->one();
+        $employees = Employee::find()->where(['!=', 'id', $employee->id])->all();
+        return $this->render('rating', [
+            'employees' => $employees,
         ]);
     }
 
-    /**
-     * Updates an existing Employee model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
+    public function actionSendRating($to_employee){
+        $this->layout = false;
+        $employeeFrom = Employee::find()->where(['user_id' => Yii::$app->user->id])->one();
+        $employeeTo = Employee::findOne($to_employee);
+        $sendRate = new SendRateForm();
+        if ($sendRate->load(Yii::$app->request->post()) ) {
+            //vd(Yii::$app->request->post(), false);
+            $transfer = new TransferRate();
+            $transfer->to_employee = $sendRate->to_employee;
+            $transfer->from_employee = $sendRate->from_employee;
+            $transfer->rate = $sendRate->rate;
+            $transferFrom = EmployeeRate::find()->where(['employee_id' => $employeeFrom->id])->one();
+            $transferFrom->current_rate = $transferFrom->current_rate - $sendRate->rate;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            $transferTo = EmployeeRate::find()->where(['employee_id' => $employeeTo->id])->one();
+            if(!is_null($transferTo)){
+                $transferTo->current_rate = $transferTo->current_rate + $sendRate->rate;
+                $transferTo->global_rate = $transferTo->global_rate + $sendRate->rate;
+            }else{
+                $transferTo = new EmployeeRate();
+                $transferTo->employee_id = $employeeTo->id;
+                $transferTo->rate = $sendRate->rate;
+                $transferTo->current_rate = $sendRate->rate;
+                $transferTo->global_rate = $sendRate->rate;
+            }
+
+            $db = Yii::$app->db;
+            $transaction = $db->beginTransaction();
+
+            try {
+                if($transferTo->save() && $transferFrom->save() && $transfer->save()){
+                    Yii::$app->session->setFlash('success', 'Запись добавлена!');
+                    return $this->redirect('/');
+                }else{
+                    $transaction->rollBack();
+                    vd([$transferTo->errors, $transferFrom->errors, $transfer->errors]);
+                }
+                // ... executing other SQL statements ...
+
+                $transaction->commit();
+            } catch(\Exception $e) {
+                $transaction->rollBack();
+                throw $e;
+            } catch(\Throwable $e) {
+                $transaction->rollBack();
+            }
+
+            /*vd($transferTo);
+            vd($transferFrom->current_rate);
+            vd($transfer->attributes);*/
         }
 
-        return $this->render('update', [
-            'model' => $model,
+        $sendRate->to_employee = $employeeTo->id;
+        $sendRate->from_employee = $employeeFrom->id;
+        return $this->render('send_rate_form', [
+            'rate' => $sendRate,
+            'employeeFrom' => $employeeFrom,
+            'employeeTo' => $employeeTo,
         ]);
     }
 
-    /**
-     * Deletes an existing Employee model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
-    }
 
     /**
      * Finds the Employee model based on its primary key value.

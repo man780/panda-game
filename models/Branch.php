@@ -106,6 +106,6 @@ class Branch extends \yii\db\ActiveRecord
      */
     public function getList()
     {
-        return self::find()->where(['>', 'id', 2])->all();
+        return self::find()->where(['>', 'id', 1])->all();
     }
 }

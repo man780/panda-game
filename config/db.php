@@ -2,6 +2,9 @@
 
 return [
     'class' => 'yii\db\Connection',
+    /*'dsn' => 'mysql:host=localhost;dbname=panda-game',
+    'username' => 'panda-game',
+    'password' => 'e56X10o71B3A4m73',*/
     'dsn' => 'mysql:host=localhost;dbname=panda_game',
     'username' => 'root',
     'password' => '',

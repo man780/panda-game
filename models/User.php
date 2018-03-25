@@ -55,9 +55,9 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     {
         return [
             'id' => 'ID',
-            'username' => 'Ник',
-            'email' => 'Email',
-            'password' => 'Password Hash',
+            'username' => 'Логин',
+            'email' => 'Эл-почта',
+            'password' => 'Пароль',
             'status' => 'Статус',
             'auth_key' => 'Auth Key',
             'created_at' => 'Дата создания',
@@ -81,6 +81,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     {
         return $this->hasOne(Employee::className(), ['user_id' => 'id']);
     }
+
     /* Поиск */
     /** Находит пользователя по имени и возвращает объект найденного пользователя.
      *  Вызываеться из модели LoginForm.
@@ -91,6 +92,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             'username' => $username
         ]);
     }
+
     /* Находит пользователя по емайл */
     public static function findByEmail($email)
     {
@@ -98,6 +100,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             'email' => $email
         ]);
     }
+
     public static function findBySecretKey($key)
     {
         if (!static::isSecretKeyExpire($key))
@@ -113,10 +116,12 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     {
         $this->secret_key = Yii::$app->security->generateRandomString().'_'.time();
     }
+
     public function removeSecretKey()
     {
         $this->secret_key = null;
     }
+
     public static function isSecretKeyExpire($key)
     {
         if (empty($key))
@@ -128,6 +133,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         $timestamp = (int) end($parts);
         return $timestamp + $expire >= time();
     }
+
     /**
      * Генерирует хеш из введенного пароля и присваивает (при записи) полученное значение полю password_hash таблицы user для
      * нового пользователя.
@@ -137,6 +143,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     {
         $this->password_hash = Yii::$app->security->generatePasswordHash($password);
     }
+
     /**
      * Генерирует случайную строку из 32 шестнадцатеричных символов и присваивает (при записи) полученное значение полю auth_key
      * таблицы user для нового пользователя.
@@ -182,5 +189,43 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     public function validateAuthKey($authKey)
     {
         return $this->auth_key === $authKey;
+    }
+
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAchievements()
+    {
+        return $this->hasOne(Achievements::className(), ['user_id' => 'id']);
+    }
+
+    public function sendResetPassword($to_email = null, $password = null){
+        if(is_null($to_email)){
+            $to_email = $this->email;
+        }
+        if(is_null($password)){
+            $password = $this->generateRandomString(8);
+        }
+        //vd($this->password_hash, false);
+        $this->setPassword($password);
+        //vd($this->password_hash);
+        $flag = Yii::$app->mailer->compose()
+            ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name.' (отправлено роботом)'])
+            ->setTo($to_email)
+            ->setSubject('Смена пароля '.Yii::$app->name)
+            ->setHtmlBody('Ваш новый пароль: <b>'.$password.'</b>')
+            ->send();
+        return $flag;
+    }
+
+    public function generateRandomString($length = 10) {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
     }
 }

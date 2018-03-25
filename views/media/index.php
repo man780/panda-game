@@ -11,14 +11,14 @@ use yii\helpers\Url;
     </div>
     <div class="row">
         <div class="col-md-6">
-            <div class="box">
+            <div class="box container">
                 <h5>Фотоальбомы</h5>
                 <div class="row">
                     <div class="col-md-4">
                         <div class="add-album">
                             <?= Html::a(Yii::t('app', 'Создать навый фотоальбом'), null,
                                 ['class' => 'create-foto-album', 'id'=>'createFotoButton',
-                                'value'=>Url::toRoute(['/media/create-foto-album'])]) ?>
+                                    'value'=>Url::toRoute(['/media/create-foto-album'])]) ?>
                         </div>
                     </div>
 
@@ -26,7 +26,7 @@ use yii\helpers\Url;
                     <div class="col-md-4">
                         <div class="item-album">
                             <?=Html::a($fotoAlbum->name, Url::to(['media/show-fotoes', 'id' => $fotoAlbum->id]));?>
-                            <p class="date"><?=$fotoAlbum->dcreated?></p>
+                            <p class="date"><?=$fotoAlbum->created_time?></p>
                         </div>
                     </div>
                     <?endforeach;?>
@@ -34,7 +34,7 @@ use yii\helpers\Url;
             </div>
         </div>
         <div class="col-md-6">
-            <div class="box">
+            <div class="box container">
                 <h5>Видеоальбомы</h5>
                 <div class="row">
                     <div class="col-md-4">
@@ -45,12 +45,13 @@ use yii\helpers\Url;
                                     'value'=>Url::toRoute(['/media/create-video-album'])]) ?>
                         </div>
                     </div>
+
                     <?if(count($videoAlbums)>0):?>
                     <? foreach ($videoAlbums as $videoAlbum):?>
                         <div class="col-md-4">
                             <div class="item-album">
                                 <?=Html::a($videoAlbum->name, Url::to(['media/show-videos', 'id' => $videoAlbum->id]));?>
-                                <p class="date"><?=$videoAlbum->dcreated?></p>
+                                <p class="date"><?=$videoAlbum->created_time?></p>
                             </div>
                         </div>
                     <?endforeach;?>

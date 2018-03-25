@@ -37,23 +37,25 @@ class News extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'created_user'], 'required'],
+            [['title', 'full_text'], 'required'],
             [['full_text'], 'string'],
-            [['created_user'], 'integer'],
-            [['dcreated'], 'safe'],
-            [['file'], 'file', 'skipOnEmpty' => true,
+            //[['created_user'], 'integer'],
+            [['created_time'], 'safe'],
+            [['image'], 'file', 'skipOnEmpty' => true,
                 'extensions' => ['jpg', 'jpeg', 'png', 'gif']
             ],
-            [['image', 'title', 'description'], 'string', 'max' => 255],
-            [['created_user'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_user' => 'id']],
+            [['title', 'description'], 'string', 'max' => 255],
+            [['created_user'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(),
+                'targetAttribute' => ['created_user' => 'id']],
         ];
     }
 
     public function beforeSave($insert)
     {
         if (parent::beforeSave($insert)) {
+            Yii::$app->session->setFlash('success', 'Запись добавлена!');
             $this->created_user = Yii::$app->user->id;
-            $this->dcreated = date('Y-m-d H:i:s', time()+2*3600);
+            $this->created_time = date('Y-m-d H:i:s', time()+2*3600);
             return true;
         }
         return false;

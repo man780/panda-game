@@ -16,9 +16,6 @@ use yii\widgets\ActiveForm;
 <h2>
     Игра между отделами возможна только при наличии не менее двух отделов компании!
 </h2>
-<?//=Html::a('Добавить отдел', Url::toRoute('ds'), ['class' => 'btn btn-lg btn-primary'])?>
-<?= Html::a(Yii::t('app', 'Добавить отдел'), null, ['class' => 'btn btn-primary', 'id'=>'createBranchButton',
-    'value'=>Url::toRoute(['/company/create-branch'])]) ?>
 <hr>
 <div>
     <h2>Список отделов</h2>
@@ -33,20 +30,6 @@ use yii\widgets\ActiveForm;
                     Игроков: <?=count($branch->employees);?>
                     Команд: <?=count($branch->teams);?>
                 </p>
-            </div>
-            <div class="col-md-1">
-                <?= Html::a('<i class="glyphicon glyphicon-pencil"></i>', null, [
-                        'class' => 'updateBranchButton',
-                        'value' => Url::toRoute(['/company/update-branch', 'id' => $branch->id])
-                ]);
-                ?>
-                <?=Html::a('<i class="glyphicon glyphicon-trash"></i>',
-                                Url::to(['/company/delete-branch', 'id' => $branch->id]),
-                                ['data' => [
-                                    'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
-                                    'method' => 'post',
-                                ]]
-                    );?>
             </div>
         </div>
         <hr>

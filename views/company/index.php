@@ -11,7 +11,7 @@ echo Tabs::widget([
     'items' => [
         [
             'label' => 'Информация',
-            'content' => $this->render('_info', ['model' => $model]),
+            'content' => $this->render('_info', ['model' => $model, 'branches' => $branches]),
             'active' => true
         ],
         [

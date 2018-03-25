@@ -36,7 +36,7 @@ class m180106_120006_create_task_table extends Migration
             'fk-task-created_user',
             'task',
             'created_user',
-            'employee',
+            'user',
             'id',
             'CASCADE'
         );

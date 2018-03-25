@@ -14,6 +14,7 @@ use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use Yii;
+use yii\web\UploadedFile;
 
 class MediaController extends Controller
 {
@@ -25,19 +26,11 @@ class MediaController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout'],
                 'rules' => [
                     [
-                        'actions' => ['logout', 'index'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
-                ],
-            ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
                 ],
             ],
         ];
@@ -67,13 +60,13 @@ class MediaController extends Controller
             $employee_id = $cookies['employee_id']->value;
             $model->employee_id = $employee_id;
             if($model->save()){
-                return $this->redirect(['media/index']);
+                return $this->redirect(['/media/index']);
             }else{
                 vd($model->errors);
             }
         }
 
-        return $this->renderAjax('_create_foto', [
+        return $this->render('create_foto_album', [
             'model' => $model,
         ]);
     }
@@ -89,13 +82,13 @@ class MediaController extends Controller
             $employee_id = $cookies['employee_id']->value;
             $model->employee_id = $employee_id;
             if($model->save()){
-                return $this->redirect(['media/index']);
+                return $this->redirect(['/media/index']);
             }else{
                 vd($model-errors);
             }
         }
 
-        return $this->renderAjax('_create_video', [
+        return $this->render('create_video_album', [
             'model' => $model,
         ]);
     }
@@ -117,6 +110,74 @@ class MediaController extends Controller
         $this->view->title = 'Просмотр видеоальбома: '.$videoAlbum->name;
         return $this->render('show_videos', [
             'videoAlbum' => $videoAlbum,
+        ]);
+    }
+
+    public function actionCreateFoto($album_id){
+        $this->layout = 'clear';
+        $album = Media::findOne($album_id);
+
+        $items = UploadedFile::getInstances($album, 'items');
+
+        if(count($items)>0){
+            if($album->items == ''){
+                $itemsArr = [];
+            }else{
+                $itemsArr = json_decode($album->items);
+            }
+            foreach ($items as $item){
+                $time = date('YmdHis');
+                $itemsArr[] = 'images/photos/'.$album->id.'/' . $time . '.' . $item->extension;
+                $dir = \Yii::getAlias('@app');
+                $path = $dir.'/web/images/photos/'.$album->id.'/';
+                if(!is_dir($path)){
+                    mkdir($path);
+                }
+                $item->saveAs($path .$time . '.' . $item->extension);
+            }
+            $album->items = json_encode($itemsArr);
+
+            if($album->save()){
+                return $this->redirect(['index']);
+            }else{
+                vd($album->errors);
+            }
+
+        }
+
+        return $this->render('create-foto', [
+            'album' => $album,
+        ]);
+    }
+
+    public function actionCreateVideo($album_id){
+        $this->layout = 'clear';
+        $album = Media::findOne($album_id);
+
+        $post = Yii::$app->request->post();
+        //vd($post);
+        if(isset($post['Media']['items'])){
+            $items = $post['Media']['items'];
+            if($album->items == ''){
+                $itemsArr = [];
+            }else{
+                $itemsArr = json_decode($album->items);
+            }
+            foreach ($items as $item){
+                $itemsArr[] = $item;
+            }
+            $album->items = json_encode($itemsArr);
+            if($album->save()){
+                return $this->redirect(['index']);
+            }else{
+                vd($album->errors);
+            }
+
+
+        }
+
+        return $this->render('create-video', [
+            'album' => $album,
         ]);
     }
 
