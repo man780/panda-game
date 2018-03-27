@@ -2,6 +2,7 @@
 namespace app\modules\admin\controllers;
 
 use app\models\Employee;
+use app\models\Rate;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -51,29 +52,60 @@ class SettingsController extends Controller
 
     public function actionIndex()
     {
-// link to Google Docs spreadsheet
-$url='https://docs.google.com/spreadsheets/d/1dpTtDqGWg24l6j9HMPOak6MkNtJTLFRV2yTSWptUAO4/edit?alt=json#gid=0';
-
-// open file for reading
-if (($handle = fopen($url, "r")) !== FALSE)
-{
-    while (($data = fgetcsv($handle, 1000, ",")) !== FALSE)
-    {
-        $totalrows = count($data);
-        for ($row=0; $row<=$totalrows; $row++)
-        {
-            // only print out even rows, i.e. the questions
-            // the second if is to avoid blank divs from being printed out
-            // which was a bug I was experiencing
-            if (($row % 2 == 0) && (strlen($data[$row])>0))
-            {
-                $answer = $row + 1;
-                echo '<dt><span class="icon"></span>'.$data[$row].'</dt><dd>'.$data[$answer].'</dd>';
+        $rate = Rate::find()->all();
+        //vd($rate);
+        $employees = [];
+        $dates = [];
+        $tableArr = [];
+        foreach ($rate as $item){
+            if(is_null($tableArr[$item->employee_id][$item->created_time]))$tableArr[$item->employee_id][$item->created_time] = [];
+            $tableArr[$item->employee_id][$item->created_time] = $item->rate;
+            if(!in_array($item->employee_id, $employees)){
+                array_push($employees, $item->employee_id);
+            }
+            if(!in_array($item->created_time, $dates)){
+                array_push($dates, $item->created_time);
             }
         }
-    }
-    fclose($handle);
-}
 
+        return $this->render('index', [
+            'rate' => $rate,
+            'employees' => $employees,
+            'dates' => $dates,
+            'tableArr' => $tableArr,
+        ]);
+
+    }
+
+    public function actionChart(){
+        $rate = Rate::find()->all();
+        //vd($rate);
+        $employees = [];
+        $dates = [];
+        $tableArr = [];
+        foreach ($rate as $item){
+            if(is_null($tableArr[$item->employee_id][$item->created_time]))$tableArr[$item->employee_id][$item->created_time] = [];
+            $tableArr[$item->employee_id][$item->created_time] = $item->rate;
+            if(!in_array($item->employee_id, $employees)){
+                array_push($employees, $item->employee_id);
+            }
+            if(!in_array($item->created_time, $dates)){
+                array_push($dates, $item->created_time);
+            }
+        }
+
+        return $this->render('chart', [
+            'rate' => $rate,
+            'employees' => $employees,
+            'dates' => $dates,
+            'tableArr' => $tableArr,
+        ]);
+    }
+
+    public function actionCreate(){
+        $employees = Employee::find()->all();
+        return $this->render('create', [
+            'employees' => $employees,
+        ]);
     }
 }

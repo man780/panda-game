@@ -4,7 +4,7 @@ use yii\helpers\Url;
 use chintan\fullcalendar\FullCalendar;
 /* @var $this yii\web\View */
 
-$this->title = 'Главная';
+$this->title = Yii::t('app', 'Home');
 $k = 0;
 ?>
 <style>
@@ -82,9 +82,9 @@ $k = 0;
             <div class="col-md-4">
                 <img src="/<?=($employee->avatar == '')?'images/no-avatar.png':$employee->avatar;?>" width="100%" class="img-fluid" />
                 <br>
-                <span style="font-weight: bold; font-size: 12px">Текуший : <?=$employee->employeeRate->current_rate?> <img height="20px" src="/images/panda.jpg" /></span>
+                <span style="font-weight: bold; font-size: 12px"><?=Yii::t('app', 'Current')?> : <?=$employee->employeeRate->current_rate?> <img height="20px" src="/images/panda.jpg" /></span>
                 <br>
-                <span style="font-weight: bold; font-size: 12px">Глобальный : <?=$employee->employeeRate->global_rate?> <img height="20px" src="/images/panda.jpg" /></span>
+                <span style="font-weight: bold; font-size: 12px"><?=Yii::t('app', 'Global')?> : <?=$employee->employeeRate->global_rate?> <img height="20px" src="/images/panda.jpg" /></span>
             </div>
             <div class="col-md-8">
                 <div class="row">
@@ -93,7 +93,7 @@ $k = 0;
                     </div>
 
                     <div class="col-md-4">
-                        В комапании с <br>
+                        <?=Yii::t('app', 'Member since ')?> <br>
                         <?=$employee->join_date?>
                     </div>
                 </div>
@@ -121,13 +121,13 @@ $k = 0;
                 </div>
                 <hr class="dashed-line">
                 <div class="row">
-                    <?if(count($employee->achievements) > 0):?>
+                    <?if(count($employee->achievements) > 0 ):?>
                         <?foreach ($employee->achievements as $achievement):?>
                             <div class="col-md-3"><?=$achievement->name?></div>
                         <?endforeach;?>
                     <?else:?>
                         <div class="col-md-12">
-                            Пока у вас нет достижений
+                            <?=Yii::t('app', 'You have no achievements yet')?>
                             <br>
                         </div>
                     <?endif;?>
@@ -144,7 +144,7 @@ $k = 0;
     <div class="col-md-8">
         <div class="box container">
             <div class="row">
-                <h3 class="pull-left"><span class="glyphicon glyphicon-list-alt"></span> Новости</h3>
+                <h3 class="pull-left"><span class="glyphicon glyphicon-list-alt"></span> <?=Yii::t('app', 'News')?></h3>
                 <a href="/news/index" class="pull-right"><span class="glyphicon glyphicon-circle-arrow-right"></span></a>
             </div>
             <div class="container">
@@ -163,7 +163,7 @@ $k = 0;
     <div class="col-md-4">
         <div class="box container">
             <div class="row">
-                <h5 class="pull-left"><span class="glyphicon glyphicon-user"></span> Топы компании</h5>
+                <h5 class="pull-left"><span class="glyphicon glyphicon-user"></span> <?=Yii::t('app', 'Company\'s top players')?></h5>
             </div>
             <?$c = 0;?>
             <?foreach ($employees as $employee):?>
@@ -194,7 +194,7 @@ $k = 0;
     <div class="col-md-8">
         <div class="box container">
             <div class="row">
-                <h3 class="pull-left"><span class="glyphicon glyphicon-shopping-cart"></span> Магазин</h3>
+                <h3 class="pull-left"><span class="glyphicon glyphicon-shopping-cart"></span> <?=Yii::t('app', 'Store')?></h3>
                 <a href="/store/index" class="pull-right"><span class="glyphicon glyphicon-circle-arrow-right"></span></a>
             </div>
 
@@ -209,7 +209,7 @@ $k = 0;
                                     <?=$product->cost?> <img height="20px" src="/images/panda.jpg" />
                                 </p>
                                 <p>
-                                    <?= Html::a('Купить', null, [
+                                    <?= Html::a(Yii::t('app', 'Buy'), null, [
                                         'class' => 'openModalForm button',
                                         'value' => Url::toRoute(['/store/buy', 'id' => $product->id])
                                     ]);?>
@@ -225,7 +225,7 @@ $k = 0;
 
     <div class="col-md-4">
         <div class="box container">
-            <h4 class="pull-left"><span class="glyphicon glyphicon-globe"></span> Глобальный рейтинг</h4>
+            <h4 class="pull-left"><span class="glyphicon glyphicon-globe"></span> <?=Yii::t('app', 'Global rating')?></h4>
             <a href="/rating/global" class="pull-right"><span class="glyphicon glyphicon-circle-arrow-right"></span></a>
             <?foreach ($employees as $employee):?>
                 <div class="row">
@@ -233,7 +233,6 @@ $k = 0;
                         <a href="<?=Url::to(['site/user', 'user_id' => $employee->user_id]);?>">
                             <?=$employee->fname?>
                             <?=$employee->name?>
-                            <?=$employee->oname?>
                         </a>
                     </div>
                     <div class="col-md-4 text-right">

@@ -36,8 +36,8 @@ class Task extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['text', 'reward', 'deadline'], 'required'],
-            [['text'], 'string'],
+            [['text_ru', 'text_en', 'text_th', 'reward', 'deadline'], 'required'],
+            [['text_ru', 'text_en', 'text_th'], 'string'],
             [['deadline', 'created_time'], 'safe'],
             [['reward', 'created_user'], 'integer'],
             [['created_user'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_user' => 'id']],
@@ -51,7 +51,9 @@ class Task extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'text' => Yii::t('app', 'Text'),
+            'text_ru' => Yii::t('app', 'Text RU'),
+            'text_en' => Yii::t('app', 'Text EN'),
+            'text_th' => Yii::t('app', 'Text TH'),
             'deadline' => Yii::t('app', 'Deadline'),
             'reward' => Yii::t('app', 'Reward'),
             'created_user' => Yii::t('app', 'Created User'),
@@ -114,5 +116,17 @@ class Task extends \yii\db\ActiveRecord
     public function getEmployees()
     {
         return $this->hasMany(Employee::className(), ['id' => 'employee_id'])->viaTable('task_employee', ['task_id' => 'id']);
+    }
+
+    public  function getText(){
+        if (\Yii::$app->language=='ru-RU'){
+            return $this->text_ru;
+        }
+        if (\Yii::$app->language=='en-EN'){
+            return $this->text_en;
+        }
+        if (\Yii::$app->language=='th-TH'){
+            return $this->text_th;
+        }
     }
 }

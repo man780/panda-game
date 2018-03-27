@@ -21,9 +21,23 @@ Pjax::begin(['id' => 'news-form']) ?>
 ?>
 <?//vd($modal)?>
     <h2><?=$this->title;?></h2>
-    <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
-    <?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
-    <?= $form->field($model, 'full_text')->widget(CKEditor::className(), [
+    <?= $form->field($model, 'title_ru')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'title_en')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'title_th')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'description_ru')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'description_en')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'description_th')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'full_text_ru')->widget(CKEditor::className(), [
+        'options' => ['rows' => 6],
+        'preset' => 'basic'
+    ])?>
+
+    <?= $form->field($model, 'full_text_en')->widget(CKEditor::className(), [
+        'options' => ['rows' => 6],
+        'preset' => 'basic'
+    ])?>
+
+    <?= $form->field($model, 'full_text_th')->widget(CKEditor::className(), [
         'options' => ['rows' => 6],
         'preset' => 'basic'
     ])?>

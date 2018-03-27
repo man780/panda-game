@@ -3,11 +3,6 @@ use yii\helpers\Html;
 $teamsCArr = [];
 $teamsGArr = [];
 ?>
-<script>
-    $(document).ready(function(){
-        $('[data-toggle="tooltip"]').tooltip();
-    });
-</script>
 <style>
     .avatar {
         vertical-align: middle;
@@ -22,10 +17,10 @@ $teamsGArr = [];
 
     <div class="box container">
         <div class="row">
-            <div class="col-md-3">Команды</div>
-            <div class="col-md-5">Участники</div>
-            <div class="col-md-2">Текущий рейтинг</div>
-            <div class="col-md-2">Глобальный рейтинг</div>
+            <div class="col-md-3"><?=Yii::t('app', 'Teams')?></div>
+            <div class="col-md-5"><?=Yii::t('app', 'Employees')?></div>
+            <div class="col-md-2"><?=Yii::t('app', 'Current rate')?></div>
+            <div class="col-md-2"><?=Yii::t('app', 'Global rate')?></div>
         </div>
         <hr>
         <?foreach ($teams as $team):?>
@@ -52,7 +47,6 @@ $teamsGArr = [];
                     <?=$teamsGArr[$team->name]?> <img height="20px" src="/images/panda.jpg" />
                 </div>
 
-                <?//vd($teamsArr, false)?>
             </div>
         <?endforeach;?>
     </div>

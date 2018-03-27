@@ -36,9 +36,9 @@ class Roles extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'priority'], 'required'],
+            [['name_ru', 'name_en', 'name_th', 'priority'], 'required'],
             [['priority'], 'integer'],
-            [['name'], 'string', 'max' => 255],
+            [['name_ru', 'name_en', 'name_th'], 'string', 'max' => 255],
         ];
     }
 
@@ -49,7 +49,9 @@ class Roles extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'name' => Yii::t('app', 'Name'),
+            'name_ru' => Yii::t('app', 'Name RU'),
+            'name_en' => Yii::t('app', 'Name EN'),
+            'name_th' => Yii::t('app', 'Name TH'),
             'priority' => Yii::t('app', 'Priority'),
         ];
     }
@@ -78,5 +80,17 @@ class Roles extends \yii\db\ActiveRecord
             return $this->priorities[$id];
         }
 
+    }
+
+    public  function getName(){
+        if (\Yii::$app->language=='ru-RU'){
+            return $this->name_ru;
+        }
+        if (\Yii::$app->language=='en-EN'){
+            return $this->name_en;
+        }
+        if (\Yii::$app->language=='th-TH'){
+            return $this->name_th;
+        }
     }
 }

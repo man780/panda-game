@@ -61,7 +61,6 @@ class CompanyController extends Controller
         return $this->render('index', [
             'branches' => $branches,
             'teams' => $teams,
-            'title' => $title,
         ]);
     }
 

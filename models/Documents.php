@@ -31,11 +31,15 @@ class Documents extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name'], 'required'],
+            [['name_ru', 'name_en', 'name_th', 'employee_id'], 'required'],
             [['employee_id'], 'integer'],
             [['created_time'], 'safe'],
-            [['name', 'file_name'], 'string', 'max' => 255],
+            [['name_ru', 'name_en', 'name_th', 'file_name'], 'string', 'max' => 255],
             [['employee_id'], 'exist', 'skipOnError' => true, 'targetClass' => Employee::className(), 'targetAttribute' => ['employee_id' => 'id']],
+
+
+
+
         ];
     }
 
@@ -46,7 +50,9 @@ class Documents extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'name' => Yii::t('app', 'Name'),
+            'name_ru' => Yii::t('app', 'Name Ru'),
+            'name_en' => Yii::t('app', 'Name En'),
+            'name_th' => Yii::t('app', 'Name Th'),
             'file_name' => Yii::t('app', 'File Name'),
             'employee_id' => Yii::t('app', 'Employee ID'),
             'created_time' => Yii::t('app', 'Created Time'),
@@ -76,5 +82,17 @@ class Documents extends \yii\db\ActiveRecord
     public function getEmployee()
     {
         return $this->hasOne(Employee::className(), ['id' => 'employee_id']);
+    }
+
+    public  function getName(){
+        if (\Yii::$app->language=='ru-RU'){
+            return $this->name_ru;
+        }
+        if (\Yii::$app->language=='en-EN'){
+            return $this->name_en;
+        }
+        if (\Yii::$app->language=='th-TH'){
+            return $this->name_th;
+        }
     }
 }

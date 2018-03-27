@@ -4,7 +4,7 @@ use yii\bootstrap\Modal;
 
 /* @var $this \yii\web\View */
 /* @var $content string */
-
+use app\widgets\WLang;
 
 if (Yii::$app->controller->action->id === 'login') {
     /**
@@ -18,7 +18,7 @@ if (Yii::$app->controller->action->id === 'login') {
 } else {
 
     if (class_exists('backend\assets\AppAsset')) {
-        backend\assets\AppAsset::register($this);
+        app\assets\AppAsset::register($this);
     } else {
         app\assets\AppAsset::register($this);
     }

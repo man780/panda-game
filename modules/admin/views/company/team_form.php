@@ -19,7 +19,9 @@ Pjax::begin(['id' => 'banner-form']) ?>
 ]);
 ?>
 <h2><?=$this->title;?></h2>
-<?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+<?= $form->field($model, 'name_ru')->textInput(['maxlength' => true]) ?>
+<?= $form->field($model, 'name_en')->textInput(['maxlength' => true]) ?>
+<?= $form->field($model, 'name_th')->textInput(['maxlength' => true]) ?>
 <?= $form->field($model, 'branch_id')->dropDownList($branches); ?>
 <?= $form->field($model, 'file')->fileInput([
         "accept"=>"image/*"

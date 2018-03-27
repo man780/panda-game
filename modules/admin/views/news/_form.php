@@ -15,11 +15,41 @@ use dosamigos\tinymce\TinyMce;
 
     <?= $form->field($model, 'image')->fileInput() ?>
 
-    <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'description_ru')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'description_en')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'description_th')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'full_text')->widget(TinyMce::className(), [
+
+    <?= $form->field($model, 'full_text_ru')->widget(TinyMce::className(), [
+        'options' => ['rows' => 6],
+        'language' => 'ru',
+        'clientOptions' => [
+            'plugins' => [
+                "advlist autolink lists link charmap print preview anchor",
+                "searchreplace visualblocks code fullscreen",
+                "insertdatetime media table contextmenu paste"
+            ],
+            'toolbar' => "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
+        ]
+    ]); ?>
+
+
+    <?= $form->field($model, 'full_text_en')->widget(TinyMce::className(), [
+        'options' => ['rows' => 6],
+        'language' => 'ru',
+        'clientOptions' => [
+            'plugins' => [
+                "advlist autolink lists link charmap print preview anchor",
+                "searchreplace visualblocks code fullscreen",
+                "insertdatetime media table contextmenu paste"
+            ],
+            'toolbar' => "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
+        ]
+    ]); ?>
+
+
+    <?= $form->field($model, 'full_text_th')->widget(TinyMce::className(), [
         'options' => ['rows' => 6],
         'language' => 'ru',
         'clientOptions' => [

@@ -37,14 +37,29 @@ class Branch extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-
-            [['name'], 'required'],
+            [['name_ru', 'name_en', 'name_th'], 'required'],
             //[['dcreated'], 'integer'],
             [['file'], 'file', 'skipOnEmpty' => true,
                 'extensions' => ['jpg', 'jpeg', 'png', 'gif']
             ],
-            [['name'], 'string', 'max' => 255],
+            [['name_ru', 'name_en', 'name_th'], 'string', 'max' => 255],
+            [['dcreated'], 'safe'],
 
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => Yii::t('app', 'ID'),
+            'name_ru' => Yii::t('app', 'Name Ru'),
+            'name_en' => Yii::t('app', 'Name En'),
+            'name_th' => Yii::t('app', 'Name Th'),
+            'image' => Yii::t('app', 'Image'),
+            'dcreated' => Yii::t('app', 'Dcreated'),
         ];
     }
 
@@ -58,19 +73,6 @@ class Branch extends \yii\db\ActiveRecord
         }
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function attributeLabels()
-    {
-        return [
-            'id' => Yii::t('app', '№'),
-            'name' => Yii::t('app', 'Наименование'),
-            'image' => Yii::t('app', 'Картинка'),
-            'dcreated' => Yii::t('app', 'Время добавления'),
-            'file' => Yii::t('app', 'Картинка (Аватарка)'),
-        ];
-    }
 
     /**
      * @return \yii\db\ActiveQuery
@@ -98,7 +100,7 @@ class Branch extends \yii\db\ActiveRecord
 
     public function getBranchesAll()
     {
-        return ArrayHelper::map(Branch::find()->where(['>', 'id', 2])->asArray()->all(), 'id', 'name');
+        return ArrayHelper::map(Branch::find()->where(['>', 'id', 2])->asArray()->all(), 'id', 'name_ru');
     }
 
     /**
@@ -107,5 +109,17 @@ class Branch extends \yii\db\ActiveRecord
     public function getList()
     {
         return self::find()->where(['>', 'id', 1])->all();
+    }
+
+    public  function getName(){
+        if (\Yii::$app->language=='ru-RU'){
+            return $this->name_ru;
+        }
+        if (\Yii::$app->language=='en-EN'){
+            return $this->name_en;
+        }
+        if (\Yii::$app->language=='th-TH'){
+            return $this->name_th;
+        }
     }
 }

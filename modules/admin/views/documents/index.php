@@ -26,7 +26,10 @@ $this->params['breadcrumbs'][] = $this->title;
     <? foreach ($docs as $doc):?>
         <div class="row container">
             <div class="col-md-10">
-                <?=Html::a($doc->file_name, Url::to(['/'.$doc->file_name]));?>
+                <h3>
+                    <?=$doc->name?>
+                </h3>
+                <?=Html::a($doc->file_name, Url::toRoute(['/'.$doc->file_name]));?>
                 <p class="date"><?=$doc->created_time?></p>
             </div>
             <div class="col-md-2">

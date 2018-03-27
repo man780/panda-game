@@ -11,7 +11,7 @@ use yii\helpers\Url;
 </style>
 <div class="product-list  ">
     <div class="row">
-        <?if(count($myProductList)>0):?>
+        <?if(!is_null($myProductList)):?>
         <?foreach($myProductList as $product):?>
             <div class="col-md-3">
                 <div class="pull-right">

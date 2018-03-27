@@ -1,9 +1,17 @@
 <?
 $monthList = [
-    1 => "Январь", 2 => "Февраль", 3 => "Март",
-    4 => "Апрель", 5 => "Май", 6 => "Июнь",
-    7 => "Июль", 8 => "Август", 9 => "Сентябрь",
-    10 => "Октябрь", 11 => "Ноябрь", 12 => "Декабрь"
+    1 => Yii::t('app', "January"),
+    2 => Yii::t('app', "February"),
+    3 => Yii::t('app', "March"),
+    4 => Yii::t('app', "April"),
+    5 => Yii::t('app', "May"),
+    6 => Yii::t('app', "June"),
+    7 => Yii::t('app', "July"),
+    8 => Yii::t('app', "August"),
+    9 => Yii::t('app', "September"),
+    10 => Yii::t('app', "October"),
+    11 => Yii::t('app', "November"),
+    12 => Yii::t('app', "December"),
 ];
 $m = date('m');
 $Y = date('Y');
@@ -107,13 +115,13 @@ for($i = 1; $i<date('w', strtotime(date('01.$m.$Y'))); $i++){
 </div>
 
 <ul class="weekdays">
-    <li>Пн</li>
-    <li>Вт</li>
-    <li>Ср</li>
-    <li>Чт</li>
-    <li>Пт</li>
-    <li>Сб</li>
-    <li>Вс</li>
+    <li><?=Yii::t('app', 'Mon')?></li>
+    <li><?=Yii::t('app', 'Tue')?></li>
+    <li><?=Yii::t('app', 'Wed')?></li>
+    <li><?=Yii::t('app', 'Thu')?></li>
+    <li><?=Yii::t('app', 'Fri')?></li>
+    <li><?=Yii::t('app', 'Sat')?></li>
+    <li><?=Yii::t('app', 'Sun')?></li>
 </ul>
 
 <ul class="days">

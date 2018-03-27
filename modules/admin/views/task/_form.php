@@ -12,7 +12,9 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'text')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'text_ru')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'text_en')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'text_th')->textarea(['rows' => 6]) ?>
 
     <?= $form->field($model, 'deadline')->widget(\yii\jui\DatePicker::className(), [
         'language' => 'ru',

@@ -7,7 +7,7 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
-$this->title = 'Login';
+$this->title = Yii::t('app', 'Log in');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-login">
@@ -34,11 +34,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= Html::submitButton('Login', ['class' => 'btn btn-info', 'name' => 'login-button']) ?>
             </div>
         </div>
+
         <br>
 
         <div class="form-group">
             <div class="col-lg-offset-1 col-lg-11">
-                <a class="btn-link" href="/site/reset">Забыл пароль</a>
+                <a class="btn-link" href="/site/reset"><?=Yii::t('app', 'Забыл пароль?');?></a>
             </div>
         </div>
 

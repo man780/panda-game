@@ -31,7 +31,7 @@ class NewsController extends Controller
 
     public function actionIndex()
     {
-        $this->view->title = 'Новости';
+        $this->view->title = Yii::t('app', 'News');
         $news = News::find()->all();
         return $this->render('index', [
             'newsList' => $news,

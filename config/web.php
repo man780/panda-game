@@ -9,7 +9,6 @@ $config = [
     'name' => 'Panda Game',
 
     'bootstrap' => ['log'],
-    'language' => 'ru-RU',
     'modules' => [
         'admin' => [
             'class' => 'app\modules\admin\Module',
@@ -24,6 +23,7 @@ $config = [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'XlAOZY-n1gD9HqfwASMUL-9s46aNRq-M',
             'baseUrl'=> '',
+            'class' => 'app\components\LangRequest'
         ],
         'assetManager' => [
             'bundles' => [
@@ -69,18 +69,26 @@ $config = [
         'urlManager' => [
             'showScriptName' => false,
             'enablePrettyUrl' => true,
+            'class'=>'app\components\LangUrlManager',
             'rules' => [
-                '<controller>/<action>' => '<controller>/<action>'
+                '/' => 'site/index',
+                '<controller:\w+>/<action:\w+>/*'=>'<controller>/<action>',
+                '<controller>/<action>' => '<controller>/<action>',
             ]
         ],
-        /*
-        'urlManager' => [
-            'enablePrettyUrl' => true,
-            'showScriptName' => false,
-            'rules' => [
+        'language'=>'ru-RU',
+        'i18n' => [
+            'translations' => [
+                '*' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@webroot/lang',
+                    'sourceLanguage' => 'ru',
+                    'fileMap' => [
+                        'app' => 'app.php',
+                    ],
+                ],
             ],
         ],
-        */
     ],
     'params' => $params,
 ];

@@ -37,14 +37,14 @@ class News extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'full_text'], 'required'],
-            [['full_text'], 'string'],
+            [['title_ru', 'title_en', 'title_th', 'full_text_ru', 'full_text_en', 'full_text_th'], 'required'],
+            [['full_text_ru', 'full_text_en', 'full_text_th'], 'string'],
             //[['created_user'], 'integer'],
             [['created_time'], 'safe'],
             [['image'], 'file', 'skipOnEmpty' => true,
                 'extensions' => ['jpg', 'jpeg', 'png', 'gif']
             ],
-            [['title', 'description'], 'string', 'max' => 255],
+            [['title_ru', 'title_en', 'title_th', 'description_ru', 'description_en', 'description_th'], 'string', 'max' => 255],
             [['created_user'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(),
                 'targetAttribute' => ['created_user' => 'id']],
         ];
@@ -69,9 +69,15 @@ class News extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'image' => Yii::t('app', 'Image'),
-            'title' => Yii::t('app', 'Title'),
-            'description' => Yii::t('app', 'Description'),
-            'full_text' => Yii::t('app', 'Full Text'),
+            'title_ru' => Yii::t('app', 'Title RU'),
+            'title_en' => Yii::t('app', 'Title EN'),
+            'title_th' => Yii::t('app', 'Title TH'),
+            'description_ru' => Yii::t('app', 'Description RU'),
+            'description_en' => Yii::t('app', 'Description EN'),
+            'description_th' => Yii::t('app', 'Description TH'),
+            'full_text_ru' => Yii::t('app', 'Full Text RU'),
+            'full_text_en' => Yii::t('app', 'Full Text EN'),
+            'full_text_th' => Yii::t('app', 'Full Text TH'),
             'created_user' => Yii::t('app', 'Created User'),
             'dcreated' => Yii::t('app', 'Dcreated'),
         ];
@@ -83,5 +89,41 @@ class News extends \yii\db\ActiveRecord
     public function getCreatedUser()
     {
         return $this->hasOne(User::className(), ['id' => 'created_user']);
+    }
+
+    public  function getTitle(){
+        if (\Yii::$app->language=='ru-RU'){
+            return $this->title_ru;
+        }
+        if (\Yii::$app->language=='en-EN'){
+            return $this->title_en;
+        }
+        if (\Yii::$app->language=='th-TH'){
+            return $this->title_th;
+        }
+    }
+
+    public  function getDescription(){
+        if (\Yii::$app->language=='ru-RU'){
+            return $this->description_ru;
+        }
+        if (\Yii::$app->language=='en-EN'){
+            return $this->description_en;
+        }
+        if (\Yii::$app->language=='th-TH'){
+            return $this->description_th;
+        }
+    }
+
+    public  function getFull_text(){
+        if (\Yii::$app->language=='ru-RU'){
+            return $this->full_text_ru;
+        }
+        if (\Yii::$app->language=='en-EN'){
+            return $this->full_text_en;
+        }
+        if (\Yii::$app->language=='th-TH'){
+            return $this->full_text_th;
+        }
     }
 }

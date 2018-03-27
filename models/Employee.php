@@ -57,10 +57,10 @@ class Employee extends \yii\db\ActiveRecord
     {
         return [
             [['user_id', 'name', 'fname', 'team_id', 'branch_id', 'position_id', 'role_id'], 'required'],
-            [['name', 'fname', 'oname', 'about'], 'required', 'on' => 'new-employee'],
+            [['name', 'fname', 'oname', 'about_ru', 'about_en', 'about_th'], 'required', 'on' => 'new-employee'],
             [['birthday', 'join_date'], 'safe'],
             [['user_id', 'team_id', 'branch_id', 'position_id', 'role_id'], 'integer'],
-            [['about'], 'string'],
+            [['about_ru', 'about_en', 'about_th'], 'string'],
             ['user_id', 'unique',
                 'message' => 'Это юзер занято.'],
             [['name', 'fname', 'oname', 'avatar', 'phone', 'email', 'skype'], 'string', 'max' => 255],
@@ -98,7 +98,9 @@ class Employee extends \yii\db\ActiveRecord
             'name' => Yii::t('app', 'Name1'),
             'fname' => Yii::t('app', 'Fname'),
             'oname' => Yii::t('app', 'Oname'),
-            'about' => Yii::t('app', 'About'),
+            'about_ru' => Yii::t('app', 'About RU'),
+            'about_en' => Yii::t('app', 'About EN'),
+            'about_th' => Yii::t('app', 'About TH'),
             'avatar' => Yii::t('app', 'Avatar'),
             'phone' => Yii::t('app', 'Phone'),
             'email' => Yii::t('app', 'Email'),
@@ -262,5 +264,17 @@ class Employee extends \yii\db\ActiveRecord
     public function getAchievements()
     {
         return $this->hasMany(Achievements::className(), ['id' => 'achievement_id'])->viaTable('achievements_employee', ['employee_id' => 'id']);
+    }
+
+    public  function getAbout(){
+        if (\Yii::$app->language=='ru-RU'){
+            return $this->about_ru;
+        }
+        if (\Yii::$app->language=='en-EN'){
+            return $this->about_en;
+        }
+        if (\Yii::$app->language=='th-TH'){
+            return $this->about_th;
+        }
     }
 }

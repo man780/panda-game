@@ -33,10 +33,10 @@ class Media extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name'], 'required'],
-            [['description'], 'string'],
+            [['name_ru', 'name_en', 'name_th'], 'required'],
+            [['description_ru', 'description_en', 'description_th'], 'string'],
             [['foto_video', 'employee_id', 'items', 'created_time'], 'safe'],
-            [['name'], 'string', 'max' => 255],
+            [['name_ru', 'name_en', 'name_th'], 'string', 'max' => 255],
             [['employee_id'], 'exist', 'skipOnError' => true, 'targetClass' => Employee::className(), 'targetAttribute' => ['employee_id' => 'id']],
         ];
     }
@@ -48,8 +48,12 @@ class Media extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'name' => Yii::t('app', 'Названия'),
-            'description' => Yii::t('app', 'Описания'),
+            'name_ru' => Yii::t('app', 'Названия Ru'),
+            'name_en' => Yii::t('app', 'Названия EN'),
+            'name_th' => Yii::t('app', 'Названия TH'),
+            'description_ru' => Yii::t('app', 'Описания RU'),
+            'description_en' => Yii::t('app', 'Описания EN'),
+            'description_th' => Yii::t('app', 'Описания TH'),
             'foto_video' => Yii::t('app', 'Foto Video'),
             'employee_id' => Yii::t('app', 'Сотрудник'),
             'created_time' => Yii::t('app', 'created_time'),
@@ -74,5 +78,29 @@ class Media extends \yii\db\ActiveRecord
     public function getEmployee()
     {
         return $this->hasOne(Employee::className(), ['id' => 'employee_id']);
+    }
+
+    public  function getName(){
+        if (\Yii::$app->language=='ru-RU'){
+            return $this->name_ru;
+        }
+        if (\Yii::$app->language=='en-EN'){
+            return $this->name_en;
+        }
+        if (\Yii::$app->language=='th-TH'){
+            return $this->name_th;
+        }
+    }
+
+    public  function getDescription(){
+        if (\Yii::$app->language=='ru-RU'){
+            return $this->description_ru;
+        }
+        if (\Yii::$app->language=='en-EN'){
+            return $this->description_en;
+        }
+        if (\Yii::$app->language=='th-TH'){
+            return $this->description_th;
+        }
     }
 }

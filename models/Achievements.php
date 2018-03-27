@@ -34,15 +34,21 @@ class Achievements extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'reward', 'status_achievement'], 'required'],
-            [['description'], 'string'],
-            [['reward', 'created_user'], 'integer'],
+            [['name_ru', 'name_en', 'name_th', 'reward', 'status_achievement'], 'required'],
+            [['description_ru', 'description_en', 'description_th', ], 'string'],
+            [['reward'], 'integer'],
             [['dcreated', 'image'], 'safe'],
             [['image'], 'file', 'skipOnEmpty' => true,
                 'extensions' => ['jpg', 'jpeg', 'png', 'gif']
             ],
             [['name', 'status_achievement'], 'string', 'max' => 255],
             [['created_user'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_user' => 'id']],
+
+            //[[, 'reward', 'status_achievement'], 'required'],
+            //[['description_ru', 'description_en', 'description_th'], 'string'],
+            //[['reward'], 'integer'],
+            //[['dcreated'], 'safe'],
+            //[['name_ru', 'name_en', 'name_th', 'status_achievement', 'image'], 'string', 'max' => 255],
         ];
     }
 
@@ -53,13 +59,17 @@ class Achievements extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'name' => Yii::t('app', 'Name'),
-            'description' => Yii::t('app', 'Description'),
+            'name_ru' => Yii::t('app', 'Name Ru'),
+            'name_en' => Yii::t('app', 'Name En'),
+            'name_th' => Yii::t('app', 'Name Th'),
+            'description_ru' => Yii::t('app', 'Description Ru'),
+            'description_en' => Yii::t('app', 'Description En'),
+            'description_th' => Yii::t('app', 'Description Th'),
             'reward' => Yii::t('app', 'Reward'),
             'status_achievement' => Yii::t('app', 'Status Achievement'),
             'image' => Yii::t('app', 'Image'),
             'created_user' => Yii::t('app', 'Created User'),
-            'created_time' => Yii::t('app', 'Dcreated'),
+            'dcreated' => Yii::t('app', 'Dcreated'),
         ];
     }
 
@@ -85,5 +95,29 @@ class Achievements extends \yii\db\ActiveRecord
     public function getCreatedUser()
     {
         return $this->hasOne(User::className(), ['id' => 'created_user']);
+    }
+
+    public  function getName(){
+        if (\Yii::$app->language=='ru-RU'){
+            return $this->name_ru;
+        }
+        if (\Yii::$app->language=='en-EN'){
+            return $this->name_en;
+        }
+        if (\Yii::$app->language=='th-TH'){
+            return $this->name_th;
+        }
+    }
+
+    public  function getDescription(){
+        if (\Yii::$app->language=='ru-RU'){
+            return $this->description_ru;
+        }
+        if (\Yii::$app->language=='en-EN'){
+            return $this->description_en;
+        }
+        if (\Yii::$app->language=='th-TH'){
+            return $this->description_th;
+        }
     }
 }

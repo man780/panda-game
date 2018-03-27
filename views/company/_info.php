@@ -15,25 +15,25 @@ use yii\helpers\Url;
     <div class="row">
         <?foreach ($branches as $branch):?>
             <div class="well col-md-4">
-                <h3>Отдел: <?=$branch->name?></h3>
+                <h3><?=Yii::t('app', 'Department')?>: <?=$branch->name?></h3>
 
-                <h5>Команды</h5>
+                <h5><?=Yii::t('app', 'Teams')?></h5>
                 <?foreach ($branch->teams as $team):?>
                 <div class="badge">
                     <?=$team->name?>
                 </div>
                 <?endforeach;?>
 
-                <h5>Сотрудники</h5>
+                <h5><?=Yii::t('app', 'Employees')?></h5>
                 <div class="row">
                     <div class="col-md-6">
-                        Игрок
+                        <?=Yii::t('app', 'Player')?>
                     </div>
                     <div class="col-md-3">
-                        Глобальный рейтинг
+                        <?=Yii::t('app', 'Global rate')?>
                     </div>
                     <div class="col-md-3">
-                        Текуший рейтинг
+                        <?=Yii::t('app', 'Current rate')?>
                     </div>
                 </div>
                 <?foreach ($branch->employees as $employee):?>
@@ -42,7 +42,6 @@ use yii\helpers\Url;
                             <a href="<?=Url::to(['site/user', 'user_id' => $employee->user_id]);?>">
                                 <?=$employee->fname?>
                                 <?=$employee->name?>
-                                <?=$employee->oname?>
                             </a>
                         </div>
                         <div class="col-md-3">

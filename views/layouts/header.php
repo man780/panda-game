@@ -8,7 +8,9 @@ $employee_id = $cookies->getValue('employee_id');
 
 $employee = Employee::findOne($employee_id);
 //vd($employee);
+use app\widgets\WLang;
 ?>
+
 
 <header class="main-header">
 
@@ -25,7 +27,9 @@ $employee = Employee::findOne($employee_id);
             <ul class="nav navbar-nav">
 
                 <!-- Messages: style can be found in dropdown.less-->
-
+                <li>
+                    <?= WLang::widget();?>
+                </li>
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <img src="/<?=$employee->avatar?>" class="user-image img-circle" alt="Avatar"/>
@@ -33,13 +37,14 @@ $employee = Employee::findOne($employee_id);
                     </a>
                     <ul class="dropdown-menu">
                         <!-- User image -->
+
                         <li class="user-header">
                             <img src="/<?=$employee->avatar?>" class="img-circle" alt="Avatar"/>
                             <p>
                                 <?=$employee->fname?>
                                 <?=$employee->name?>
                                 <?=$employee->oname?> (<?=Yii::$app->user->identity->username?>)
-                                <small>Member since <?=$employee->join_date?></small>
+                                <small><?=Yii::t('app', 'Member since ')?><?=$employee->join_date?></small>
                             </p>
                         </li>
                         <!-- Menu Body -->
@@ -49,19 +54,19 @@ $employee = Employee::findOne($employee_id);
                                 <?if(Yii::$app->user->identity->priority == 1):?>
                                 <a class="btn btn-primary" href="/admin/employees/gamers">Админ панель</a>
                                 <?endif;?>
-                                <a class="btn btn-info" href="/employees/rating">Передача баллов</a>
+                                <a class="btn btn-info" href="/employees/rating"><?=Yii::t('app', 'Handing scores')?></a>
                             </p>
 
                             <div class="col-xs-4 text-center">
-                                <b>Отдел</b>
+                                <b><?=Yii::t('app', 'Department')?></b>
                                 <span><?=$employee->branch->name?></span>
                             </div>
                             <div class="col-xs-4 text-center">
-                                <b>Команда</b>
+                                <b><?=Yii::t('app', 'Team')?></b>
                                 <span><?=$employee->team->name?></span>
                             </div>
                             <div class="col-xs-4 text-center">
-                                <b>Должность</b>
+                                <b><?=Yii::t('app', 'Position')?></b>
                                 <span><?=$employee->position->name?></span>
                             </div>
                         </li>
@@ -69,14 +74,14 @@ $employee = Employee::findOne($employee_id);
                         <li class="user-footer">
                             <div class="pull-left">
                                 <?= Html::a(
-                                    'Профиль',
+                                    Yii::t('app', 'Profile'),
                                     ['/site/profile'],
                                     ['data-method' => 'post', 'class' => 'btn btn-default btn-flat']
                                 ) ?>
                             </div>
                             <div class="pull-right">
                                 <?= Html::a(
-                                    'Выход',
+                                    Yii::t('app', 'Exit'),
                                     ['/site/logout'],
                                     ['data-method' => 'post', 'class' => 'btn btn-default btn-flat']
                                 ) ?>

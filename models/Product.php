@@ -38,10 +38,10 @@ class Product extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'cost', 'quantity_max'], 'required'],
-            [['description'], 'string'],
+            [['name_ru', 'name_en', 'name_th', 'cost', 'quantity_max'], 'required'],
+            [['description_ru', 'description_en', 'description_th'], 'string'],
             [['cost', 'quantity', 'quantity_max', 'is_team', 'created_user'], 'integer'],
-            [['name', 'image'], 'string', 'max' => 255],
+            [['name_ru', 'name_en', 'name_th', 'image'], 'string', 'max' => 255],
             [['created_user'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_user' => 'id']],
         ];
     }
@@ -53,8 +53,12 @@ class Product extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'name' => Yii::t('app', 'Name'),
-            'description' => Yii::t('app', 'Description'),
+            'name_ru' => Yii::t('app', 'Name RU'),
+            'name_en' => Yii::t('app', 'Name EN'),
+            'name_th' => Yii::t('app', 'Name TH'),
+            'description_ru' => Yii::t('app', 'Description RU'),
+            'description_en' => Yii::t('app', 'Description EN'),
+            'description_th' => Yii::t('app', 'Description TH'),
             'cost' => Yii::t('app', 'Cost'),
             'quantity' => Yii::t('app', 'Quantity'),
             'quantity_max' => Yii::t('app', 'Quantity Max'),
@@ -105,5 +109,29 @@ class Product extends \yii\db\ActiveRecord
     public function getEmployees()
     {
         return $this->hasMany(Employee::className(), ['id' => 'employee_id'])->viaTable('product_employee', ['product_id' => 'id']);
+    }
+
+    public  function getName(){
+        if (\Yii::$app->language=='ru-RU'){
+            return $this->name_ru;
+        }
+        if (\Yii::$app->language=='en-EN'){
+            return $this->name_en;
+        }
+        if (\Yii::$app->language=='th-TH'){
+            return $this->name_th;
+        }
+    }
+
+    public  function getDescription(){
+        if (\Yii::$app->language=='ru-RU'){
+            return $this->description_ru;
+        }
+        if (\Yii::$app->language=='en-EN'){
+            return $this->description_en;
+        }
+        if (\Yii::$app->language=='th-TH'){
+            return $this->description_th;
+        }
     }
 }
