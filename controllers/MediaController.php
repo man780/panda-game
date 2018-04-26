@@ -125,16 +125,17 @@ class MediaController extends Controller
             }else{
                 $itemsArr = json_decode($album->items);
             }
-            foreach ($items as $item){
+            foreach ($items as $k => $item){
                 $time = date('YmdHis');
-                $itemsArr[] = 'images/photos/'.$album->id.'/' . $time . '.' . $item->extension;
+                $itemsArr[] = 'images/photos/'.$album->id . '/' . $time.$k . '.' . $item->extension;
                 $dir = \Yii::getAlias('@app');
                 $path = $dir.'/web/images/photos/'.$album->id.'/';
                 if(!is_dir($path)){
                     mkdir($path);
                 }
-                $item->saveAs($path .$time . '.' . $item->extension);
+                $item->saveAs($path .$time.$k . '.' . $item->extension);
             }
+            //vd($itemsArr);
             $album->items = json_encode($itemsArr);
 
             if($album->save()){

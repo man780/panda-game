@@ -32,7 +32,7 @@ class Rate extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['task_id', 'employee_id'], 'required'],
+            [['rate', 'employee_id'], 'required'],
             [['task_id', 'employee_id', 'rate'], 'integer'],
             [['created_time'], 'safe'],
             [['employee_id'], 'exist', 'skipOnError' => true, 'targetClass' => Employee::className(), 'targetAttribute' => ['employee_id' => 'id']],

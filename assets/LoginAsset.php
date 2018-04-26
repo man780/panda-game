@@ -10,7 +10,7 @@ namespace app\assets;
 use yii\web\AssetBundle;
 
 /**
- * @author Qiang Xue <qiang.xue@gmail.com>
+ * @author Murod
  * @since 2.0
  */
 class LoginAsset extends AssetBundle

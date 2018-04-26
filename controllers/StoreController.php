@@ -49,7 +49,7 @@ class StoreController extends Controller
         $myProductList = $employee->products;
         return $this->render('index', [
             'productList' => $productList,
-            'myPproductList' => $myProductList,
+            'myProductList' => $myProductList,
         ]);
     }
 

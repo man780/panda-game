@@ -10,47 +10,95 @@ if(is_null($fotoAlbum)):
 else:?>
 
 <style>
-    .row {
-        display: -ms-flexbox; /* IE10 */
-        display: flex;
-        -ms-flex-wrap: wrap; /* IE10 */
-        flex-wrap: wrap;
-        padding: 0 4px;
+    #myImg {
+        border-radius: 5px;
+        cursor: pointer;
+        transition: 0.3s;
     }
 
-    /* Create four equal columns that sits next to each other */
-    .column {
-        -ms-flex: 25%; /* IE10 */
-        flex: 25%;
-        max-width: 25%;
-        padding: 0 4px;
+    #myImg:hover {opacity: 0.7;}
+
+    /* The Modal (background) */
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 2000; /* Sit on top */
+        padding-top: 100px; /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+
     }
 
-    .column img {
-        margin-top: 8px;
-        vertical-align: middle;
+    /* Modal Content (image) */
+    .modal-content {
+        margin: auto;
+        display: block;
+        width: 80%;
+        max-width: 700px;
     }
 
-    /* Responsive layout - makes a two column-layout instead of four columns */
-    @media screen and (max-width: 800px) {
-        .column {
-            -ms-flex: 50%;
-            flex: 50%;
-            max-width: 50%;
-        }
+    /* Caption of Modal Image */
+    #caption {
+        margin: auto;
+        display: block;
+        width: 80%;
+        max-width: 700px;
+        text-align: center;
+        color: #ccc;
+        padding: 10px 0;
+        height: 150px;
     }
 
-    /* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
-    @media screen and (max-width: 600px) {
-        .column {
-            -ms-flex: 100%;
-            flex: 100%;
-            max-width: 100%;
+    /* Add Animation */
+    .modal-content, #caption {
+        -webkit-animation-name: zoom;
+        -webkit-animation-duration: 0.6s;
+        animation-name: zoom;
+        animation-duration: 0.6s;
+    }
+
+    @-webkit-keyframes zoom {
+        from {-webkit-transform:scale(0)}
+        to {-webkit-transform:scale(1)}
+    }
+
+    @keyframes zoom {
+        from {transform:scale(0)}
+        to {transform:scale(1)}
+    }
+
+    /* The Close Button */
+    .close {
+        position: absolute;
+        top: 15px;
+        right: 35px;
+        color: #f1f1f1;
+        font-size: 40px;
+        font-weight: bold;
+        transition: 0.3s;
+        z-index: 9999999;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: #bbb;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    /* 100% Image Width on Smaller Screens */
+    @media only screen and (max-width: 700px){
+        .modal-content {
+            width: 100%;
         }
     }
 </style>
 <div class="box">
-
 
     <h2><?=$this->title;?></h2>
     <p class="date"><strong>Дата создяния:</strong> <?=$fotoAlbum->created_time;?></p>
@@ -67,53 +115,58 @@ else:?>
                 ?>
             </div>
         </div>
-        <div class="row">
-            <div class="column">
-                <img src="/images/photos/1/wedding.jpg" style="width:100%">
-                <img src="/images/photos/1/rocks.jpg" style="width:100%">
-                <img src="/images/photos/1/falls2.jpg" style="width:100%">
-                <img src="/images/photos/1/paris.jpg" style="width:100%">
-                <img src="/images/photos/1/nature.jpg" style="width:100%">
-                <img src="/images/photos/1/mist.jpg" style="width:100%">
-                <img src="/images/photos/1/paris.jpg" style="width:100%">
-            </div>
-            <div class="column">
-                <img src="/images/photos/1/underwater.jpg" style="width:100%">
-                <img src="/images/photos/1/ocean.jpg" style="width:100%">
-                <img src="/images/photos/1/wedding.jpg" style="width:100%">
-                <img src="/images/photos/1/mountainskies.jpg" style="width:100%">
-                <img src="/images/photos/1/rocks.jpg" style="width:100%">
-                <img src="/images/photos/1/underwater.jpg" style="width:100%">
-            </div>
-            <div class="column">
-                <img src="/images/photos/1/wedding.jpg" style="width:100%">
-                <img src="/images/photos/1/rocks.jpg" style="width:100%">
-                <img src="/images/photos/1/falls2.jpg" style="width:100%">
-                <img src="/images/photos/1/paris.jpg" style="width:100%">
-                <img src="/images/photos/1/nature.jpg" style="width:100%">
-                <img src="/images/photos/1/mist.jpg" style="width:100%">
-                <img src="/images/photos/1/paris.jpg" style="width:100%">
-            </div>
-            <div class="column">
-                <img src="/images/photos/1/underwater.jpg" style="width:100%">
-                <img src="/images/photos/1/ocean.jpg" style="width:100%">
-                <img src="/images/photos/1/wedding.jpg" style="width:100%">
-                <img src="/images/photos/1/mountainskies.jpg" style="width:100%">
-                <img src="/images/photos/1/rocks.jpg" style="width:100%">
-                <img src="/images/photos/1/underwater.jpg" style="width:100%">
-            </div>
-        </div>
 
         <div class="row">
             <?if(!is_null($items)):?>
             <?foreach ($items as $item):?>
             <div class="col-md-2">
-                <?=Html::img('/'.$item, ['style' => ['height' => '70px']]);?>
+                <div class="container">
+
+                    <?//=Html::img('/'.$item, ['class' => ' modal-content', 'id' => 'img01']);?>
+                    <img id="myImg" class="myImg" src="<?='/'.$item?>" width="100%" />
+
+                </div>
+
             </div>
             <?endforeach;?>
             <?endif;?>
         </div>
     </div>
 
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+
+        <!-- The Close Button -->
+        <span class="close">&times;</span>
+
+        <!-- Modal Content (The Image) -->
+        <img class="modal-content" id="img01">
+
+        <!-- Modal Caption (Image Text) -->
+        <div id="caption"></div>
+    </div>
+    <script>
+        // Get the modal
+        var modal = document.getElementById('myModal');
+
+        // Get the image and insert it inside the modal - use its "alt" text as a caption
+        var img = document.getElementsByClassName('myImg')[0];
+        //console.log(img);
+        var modalImg = document.getElementById("img01");
+        var captionText = document.getElementById("caption");
+        img.onclick = function(){
+            modal.style.display = "block";
+            modalImg.src = this.src;
+            captionText.innerHTML = this.alt;
+        };
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+    </script>
 </div>
 <?endif;?>

@@ -56,10 +56,6 @@ $k = 0;
         display: table;
     }
 
-    .title {
-        color: grey;
-    }
-
     .button {
         border: none;
         padding: 8px;
@@ -200,24 +196,46 @@ $k = 0;
 
             <div class="row">
                 <?foreach($productList as $product):?>
-                    <div class="column">
-                        <div class="card">
-                            <?=Html::img('/'.$product->image, ['style' => ['width' => '100%']]);?>
-                            <div class="box container">
+                    <div class="col-md-3" style="padding: 5px;">
+                        <div class="inner-auto-item-index">
+                            <div class="card inner-auto-img-index">
+                                <?=Html::img('/'.$product->image/*, ['style' => ['width' => '100%']]*/);?>
+                            </div>
+                            <div class="box container" style="text-align: center;">
                                 <p class="title"><?=$product->name?></p>
                                 <p>
                                     <?=$product->cost?> <img height="20px" src="/images/panda.jpg" />
                                 </p>
                                 <p>
-                                    <?= Html::a(Yii::t('app', 'Buy'), null, [
-                                        'class' => 'openModalForm button',
+                                    <?= Html::a('Купить', null, [
+                                        'class' => 'openModalForm item-order-button',
                                         'value' => Url::toRoute(['/store/buy', 'id' => $product->id])
                                     ]);?>
                                 </p>
                             </div>
                         </div>
+
                     </div>
                 <?endforeach;?>
+                <?/*foreach($productList as $product):*/?><!--
+                    <div class="column">
+                        <div class="card">
+                            <?/*=Html::img('/'.$product->image, ['style' => ['width' => '100%']]);*/?>
+                            <div class="box container">
+                                <p class="title"><?/*=$product->name*/?></p>
+                                <p>
+                                    <?/*=$product->cost*/?> <img height="20px" src="/images/panda.jpg" />
+                                </p>
+                                <p>
+                                    <?/*= Html::a(Yii::t('app', 'Buy'), null, [
+                                        'class' => 'openModalForm button',
+                                        'value' => Url::toRoute(['/store/buy', 'id' => $product->id])
+                                    ]);*/?>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                --><?/*endforeach;*/?>
             </div>
 
         </div>

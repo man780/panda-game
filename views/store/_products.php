@@ -9,24 +9,28 @@ use yii\helpers\Url;
         text-align: center;
     }
 </style>
-<div class="product-list ">
+<div class="product-list" style="background-color: #f8f8f8;">
     <div class="row">
-    <?foreach($productList as $product):?>
-        <div class="col-md-3">
-            <div class="pull-right">
-                <?=$product->cost?> <img height="20px" src="/images/panda.jpg" />
-            </div>
-            <?=Html::img('/'.$product->image, ['style' => ['width' => '100%']]);?>
-            <p><?=$product->name?></p>
-            <p>
-                <?= Html::a('Купить', null, [
-                    'class' => 'openModalForm text-center',
-                    'value' => Url::toRoute(['/store/buy', 'id' => $product->id])
-                ]);?>
-            </p>
+        <div class="col-md-12">
+            <?foreach($productList as $product):?>
+                <div class="col-md-3" style="padding: 10px;">
+                    <div class="innerauto-item">
+                        <div class="pull-right innerauto-img">
+                            <?=Html::img('/'.$product->image/*, ['style' => ['width' => '100%']]*/);?>
+                        </div>
+
+                        <p class="text-center"><?=$product->name?></p>
+                        <p class="text-center"><?=$product->cost?> <img height="20px" src="/images/panda.jpg" /></p>
+
+                        <p style="text-align: center;" >
+                            <?= Html::a(Yii::t('app', 'Купить'), null, [
+                                'class' => 'openModalForm item-order-button',
+                                'value' => Url::toRoute(['/store/buy', 'id' => $product->id])
+                            ]);?>
+                        </p>
+                    </div>
+                </div>
+            <?endforeach;?>
         </div>
-
-    <?endforeach;?>
     </div>
-
 </div>
